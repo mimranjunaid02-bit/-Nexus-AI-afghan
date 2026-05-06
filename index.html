@@ -3,41 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus AI - د څېړنې مرکز</title>
-    <link rel="stylesheet" href="style.css">
-    </head>
+    <title>Nexus AI - عمران عمر</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f7f6; margin: 0; padding: 20px; direction: rtl; text-align: right; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .header { text-align: center; border-bottom: 2px solid #007bff; margin-bottom: 15px; }
+        .profile { background: #e9f2ff; padding: 15px; border-radius: 10px; font-size: 15px; line-height: 1.8; }
+        .ad-space { border: 2px dashed #28a745; margin: 20px 0; padding: 15px; text-align: center; color: #28a745; border-radius: 10px; }
+        .chat-area { height: 200px; border: 1px solid #ddd; border-radius: 10px; padding: 10px; background: #fafafa; margin-bottom: 15px; overflow-y: auto; }
+        .input-box { display: flex; gap: 10px; }
+        input { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
 <body>
     <div class="container">
-        <header>
-            <h1>Nexus AI</h1>
-            <div class="owner-info">
-                <p><b>جوړونکی:</b> محمد عمران عمر</p>
-                <p><b>د پلار نوم:</b> محمد طاهر</p>
-                <p><b>ادرس:</b> افغانستان، وردګ، جغتو، بنګي کلی</p>
-            </div>
-        </header>
-
-        <div class="feature-bar">
-            <span>🌍 ټولې ژبې</span> | <span>📚 دقیق تحقیق</span> | <span>✍️ مقالې او ګرامر</span>
+        <div class="header">
+            <h1>Nexus AI (نکسس)</h1>
+            <p>د علمي کچې لوړولو او تحقیق مرکز</p>
         </div>
-
-        <div id="chat-box" class="chat-box">
-            <div class="message bot">
-                سلام! زه نکسس AI یم. زه د <b>محمد عمران عمران</b> لخوا ډیزاین شوی یم ترڅو تاسو سره په علمي مقالو، تحقیق او د ژبو په تحلیل کې مرسته وکړم. 
-                <br>خپله پوښتنه یا موضوع ولیکئ:
-            </div>
+        <div class="profile">
+            <b>جوړونکی:</b> محمد عمران عمر<br>
+            <b>د پلار نوم:</b> محمد طاهر<br>
+            <b>پته:</b> افغانستان، وردګ، جغتو، بنګي کلی
         </div>
-
-        <div class="input-area">
-            <textarea id="user-input" placeholder="خپله موضوع دلته ولیکئ..."></textarea>
-            <button onclick="sendMessage()">تحلیل پیل کړه</button>
+        <div class="ad-space">
+            💰 دلته به ستا اعلانونه او ډالر ښکاري (Google AdSense)
         </div>
-
-        <div class="ad-container">
-            <small>سپانسر شوي اعلانونه</small>
-            <div class="ad-box">دلته به ستاسو اعلانونه او پیسې ښکاري</div>
+        <div id="chat" class="chat-area">
+            <p style="color: #555;">سلام! زه نکسس AI یم. زه د <b>محمد عمران عمر</b> لخوا جوړ شوی یم ترڅو ستا سره په مقالو، ګرامر او دقیقو معلوماتو کې مرسته وکړم.</p>
+        </div>
+        <div class="input-box">
+            <input type="text" placeholder="خپله موضوع دلته ولیکئ...">
+            <button onclick="alert('د نکسس AI ماډل چمتو دی!')">سرچ</button>
         </div>
     </div>
-    <script src="script.js"></script>
 </body>
 </html>
