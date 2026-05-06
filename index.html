@@ -1,85 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>استاد یار</title>
-
-<style>
-body {font-family: Arial; margin:0; background:#f0f2f5;}
-header {background:#1e88e5;color:white;padding:15px;text-align:center;}
-.container {padding:15px; max-width:600px; margin:auto;}
-.card {background:white;padding:15px;margin-bottom:15px;border-radius:10px;}
-input,button {width:100%;padding:10px;margin-top:10px;border-radius:8px;}
-button {background:#1e88e5;color:white;border:none;}
-.output {background:#eef4ff;padding:10px;margin-top:10px;border-radius:8px;}
-</style>
+<title>استاد یار AI</title>
 </head>
 
 <body>
 
-<header>📘 استاد یار</header>
+<h2>📘 استاد یار AI</h2>
 
-<div class="container">
+<input id="subject" placeholder="Subject"><br><br>
+<input id="topic" placeholder="Topic"><br><br>
 
-<div class="card">
-<h3>📚 مضمون</h3>
-<input type="text" id="subject" placeholder="مضمون">
-<input type="text" id="topic" placeholder="موضوع">
-</div>
+<input type="file" id="file"><br><br>
 
-<div class="card">
-<h3>📂 فایل اپلوډ</h3>
-<input type="file" id="file">
-<p id="fileName"></p>
-</div>
+<button onclick="generate()">Generate AI Plan + Questions</button>
 
-<div class="card">
-<button onclick="generateFromFile()">📊 د فایل نه پلان + سوالونه</button>
-
-<div id="output" class="output"></div>
-</div>
-
-</div>
+<pre id="output"></pre>
 
 <script>
-let fileText = "";
-
-document.getElementById("file").addEventListener("change", function(e){
-    let file = e.target.files[0];
-    document.getElementById("fileName").innerText = file.name;
-
-    if(file.type === "text/plain"){
-        let reader = new FileReader();
-        reader.onload = function(e){
-            fileText = e.target.result;
-        }
-        reader.readAsText(file);
-    } else {
-        fileText = "File loaded (only name available)";
-    }
-});
-
-function generateFromFile(){
+async function generate(){
     let subject = document.getElementById("subject").value;
     let topic = document.getElementById("topic").value;
 
-    let text = fileText.substring(0, 200); // sample
+    let res = await fetch("http://localhost:3000/generate", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({subject, topic})
+    });
 
-    document.getElementById("output").innerHTML = `
-    <b>📚 مضمون:</b> ${subject}<br>
-    <b>📝 موضوع:</b> ${topic}<br><br>
-
-    <b>📖 پلان:</b><br>
-    🎯 هدف: د متن درک<br>
-    🧠 فعالیتونه: تشریح + تمرین<br>
-    📊 ارزونه: امتحان<br><br>
-
-    <b>❓ سوالونه:</b><br>
-    🟢 آسان: ${text}?<br><br>
-    🟡 متوسط: دا متن تشریح کړه<br><br>
-    🔴 سخت: تحلیل یې کړه
-    `;
+    let data = await res.json();
+    document.getElementById("output").innerText = data.result;
 }
 </script>
 
