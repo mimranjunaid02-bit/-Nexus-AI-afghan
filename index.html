@@ -3,40 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus AI - عمران عمر</title>
+    <title>Nexus AI - Mohammad Imran Omar</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5945219560773997" crossorigin="anonymous"></script>
+    
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f7f6; margin: 0; padding: 20px; direction: rtl; text-align: right; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .header { text-align: center; border-bottom: 2px solid #007bff; margin-bottom: 15px; }
-        .profile { background: #e9f2ff; padding: 15px; border-radius: 10px; font-size: 15px; line-height: 1.8; }
-        .ad-space { border: 2px dashed #28a745; margin: 20px 0; padding: 15px; text-align: center; color: #28a745; border-radius: 10px; }
-        .chat-area { height: 200px; border: 1px solid #ddd; border-radius: 10px; padding: 10px; background: #fafafa; margin-bottom: 15px; overflow-y: auto; }
-        .input-box { display: flex; gap: 10px; }
-        input { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px; }
-        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        :root { --primary: #2c3e50; --secondary: #3498db; --accent: #e74c3c; --light: #f4f7f6; }
+        body { font-family: 'Arial', sans-serif; background-color: var(--light); margin: 0; padding: 0; color: #333; }
+        .header { background: var(--primary); color: white; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .container { max-width: 600px; margin: 20px auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .profile-card { border-right: 5px solid var(--secondary); background: #f9f9f9; padding: 15px; margin-bottom: 20px; border-radius: 5px; text-align: right; }
+        .nexus-box { background: #fff; border: 2px solid var(--secondary); border-radius: 10px; padding: 15px; margin: 15px 0; }
+        .btn { background: var(--secondary); color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; width: 100%; font-size: 16px; transition: 0.3s; margin-top: 10px; }
+        .btn:hover { background: #2980b9; transform: scale(1.02); }
+        .ad-slot { background: #eee; border: 1px dashed #bbb; height: 100px; display: flex; align-items: center; justify-content: center; color: #888; font-size: 12px; margin: 15px 0; border-radius: 8px; }
+        input[type="text"] { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        footer { margin-top: 30px; font-size: 12px; color: #777; padding-bottom: 20px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Nexus AI (نکسس)</h1>
-            <p>د علمي کچې لوړولو او تحقیق مرکز</p>
-        </div>
-        <div class="profile">
-            <b>جوړونکی:</b> محمد عمران عمر<br>
-            <b>د پلار نوم:</b> محمد طاهر<br>
-            <b>پته:</b> افغانستان، وردګ، جغتو، بنګي کلی
-        </div>
-        <div class="ad-space">
-            💰 دلته به ستا اعلانونه او ډالر ښکاري (Google AdSense)
-        </div>
-        <div id="chat" class="chat-area">
-            <p style="color: #555;">سلام! زه نکسس AI یم. زه د <b>محمد عمران عمر</b> لخوا جوړ شوی یم ترڅو ستا سره په مقالو، ګرامر او دقیقو معلوماتو کې مرسته وکړم.</p>
-        </div>
-        <div class="input-box">
-            <input type="text" placeholder="خپله موضوع دلته ولیکئ...">
-            <button onclick="alert('د نکسس AI ماډل چمتو دی!')">سرچ</button>
-        </div>
+
+<div class="header">
+    <h1>Nexus AI | نکسس</h1>
+    <p>ستاسو د تحقیق او ساینس هوښیار مرستیال</p>
+</div>
+
+<div class="container">
+    <div class="profile-card">
+        <h3 style="margin:0; color: var(--secondary);">د څیړونکي پیژندنه</h3>
+        <p><strong>نوم:</strong> محمد عمران عمر</p>
+        <p><strong>څانګه:</strong> کابل پوهنتون - پيداګوژي</p>
+        <p><strong>موضوع:</strong> د تحصیلي خدماتو کیفیت او د محصلینو پرمختګ</p>
     </div>
+
+    <div class="ad-slot">د ګوګل اعلانونه به دلته ښکاري (Top Ad)</div>
+
+    <div class="nexus-box">
+        <h3>له هوښیار مرستیال څخه وپوښتئ:</h3>
+        <input type="text" id="userInput" placeholder="خپله پوښتنه دلته ولیکئ...">
+        <button class="btn" onclick="askAi()">ځواب ترلاسه کړئ</button>
+        <p id="response" style="margin-top: 15px; color: #555; font-style: italic;"></p>
+    </div>
+
+    <div class="ad-slot">د ګوګل اعلانونه به دلته ښکاري (Bottom Ad)</div>
+
+    <div style="display: flex; gap: 10px;">
+        <button class="btn" style="background: #27ae60;" onclick="alert('د SERVQUAL سروې ډیټا تحلیل پیل شو...')">د کیفیت سروې</button>
+        <button class="btn" style="background: var(--primary);" onclick="window.location.reload()">تازه کول</button>
+    </div>
+
+    <footer>
+        <p>© ۲۰۲۶ - ټول حقونه د محمد عمران عمر سره خوندي دي.</p>
+        <p>کابل، افغانستان</p>
+    </footer>
+</div>
+
+<script>
+    function askAi() {
+        const input = document.getElementById('userInput').value;
+        const responseArea = document.getElementById('response');
+        if(input.trim() === "") {
+            responseArea.innerText = "مهرباني وکړئ خپله پوښتنه ولیکئ.";
+            return;
+        }
+        responseArea.innerText = "Nexus AI فکر کوي... ستاسو ځواب د تحقیق په اساس چمتو کیږي.";
+        setTimeout(() => {
+            responseArea.innerText = "عمران جانه، دا فیچر به ډیر ژر ستا له خپل API سره وصل شي.";
+        }, 1500);
+    }
+</script>
+
 </body>
 </html>
