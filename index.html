@@ -3,96 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus AI - Secure Mode</title>
+    <title>Academic Assistant - عمران عمر</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --main-blue: #1a73e8; --chat-bg: #f8f9fa; }
-        body { font-family: 'Segoe UI', Arial; margin: 0; background: #fff; color: #202124; }
-        .header { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: white; z-index: 100; }
-        #chatContainer { height: 80vh; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .message { max-width: 85%; padding: 12px 16px; border-radius: 20px; font-size: 15px; line-height: 1.5; }
-        .user-msg { background: #e9eef6; align-self: flex-end; border-radius: 20px 20px 4px 20px; }
-        .ai-msg { background: var(--chat-bg); align-self: flex-start; border-right: 4px solid var(--main-blue); white-space: pre-wrap; }
-        .input-area { position: fixed; bottom: 15px; width: 90%; left: 50%; transform: translateX(-50%); background: #f1f3f4; border-radius: 30px; padding: 8px 15px; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        input { flex: 1; border: none; background: transparent; outline: none; padding: 10px; font-size: 16px; }
-        .key-btn { color: #5f6368; cursor: pointer; margin-left: 10px; }
+        :root { --primary: #0d47a1; --secondary: #2e7d32; --accent: #ff6f00; --light: #f8f9fa; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--light); color: #333; }
+        
+        .header { background: linear-gradient(135deg, var(--primary), #1565c0); color: white; padding: 30px 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .header h1 { margin: 0; font-size: 28px; letter-spacing: 1px; font-family: 'Arial', sans-serif; }
+        
+        .ad-space { background: #fff8e1; border: 1px dashed var(--accent); padding: 15px; margin: 15px auto; text-align: center; border-radius: 12px; max-width: 850px; font-size: 14px; color: #795548; }
+        
+        .nav-tabs { display: flex; background: white; sticky: top; overflow-x: auto; border-bottom: 2px solid #ddd; }
+        .tab-item { padding: 18px 25px; cursor: pointer; font-weight: bold; white-space: nowrap; transition: 0.3s; color: #666; }
+        .tab-item.active { color: var(--primary); border-bottom: 4px solid var(--primary); background: #e3f2fd; }
+
+        .container { padding: 20px; max-width: 850px; margin: auto; }
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 20px; border-right: 6px solid var(--primary); }
+
+        label { font-weight: bold; display: block; margin-top: 15px; color: #444; }
+        input, select, textarea { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; box-sizing: border-box; transition: 0.3s; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(13,71,161,0.2); }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        .main-btn { background: var(--primary); color: white; border: none; padding: 16px; border-radius: 12px; font-weight: bold; cursor: pointer; flex: 1; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
+        .main-btn:hover { background: #0a3d8d; transform: translateY(-2px); }
+        .pdf-btn { background: #c62828; display: none; }
+        
+        #resultArea { margin-top: 25px; line-height: 1.8; white-space: pre-wrap; background: #fff; padding: 25px; border-radius: 15px; display: none; border: 1px solid #eee; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+        
+        .footer-branding { text-align: center; padding: 20px; color: #888; font-size: 13px; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <i class="fas fa-key key-btn" onclick="saveKey()" title="کیلي تنظیم کړئ"></i>
-        <h1 style="font-size: 18px; margin: 0; color: var(--main-blue);">Nexus AI</h1>
-        <i class="fas fa-user-circle" style="font-size: 24px; color: #5f6368;"></i>
+<div class="header">
+    <h1>Academic Assistant</h1>
+    <p style="opacity: 0.9; margin: 8px 0 0;">د تدریس او مدیریت په چارو کې ستاسو هوښیار ملګری</p>
+</div>
+
+<div class="ad-space">
+    <i class="fas fa-coins"></i> ستاسو د پیسو ګټلو ځای (اعلانات)
+</div>
+
+<div class="nav-tabs">
+    <div class="tab-item active" onclick="switchTab('planner', event)"><i class="fas fa-edit"></i> پلان جوړونه</div>
+    <div class="tab-item" onclick="switchTab('questions', event)"><i class="fas fa-list-ol"></i> د پوښتنو بانک</div>
+    <div class="tab-item" onclick="switchTab('about', event)"><i class="fas fa-user"></i> عمران عمر</div>
+</div>
+
+<div class="container" id="plannerSection">
+    <div class="card">
+        <h3><i class="fas fa-graduation-cap"></i> د درسي پلان فورمه</h3>
+        
+        <label>کټګوري:</label>
+        <select id="level">
+            <option value="University Professor">د پوهنتون استاد (University)</option>
+            <option value="School Teacher">د ښوونځي ښوونکی (School)</option>
+        </select>
+
+        <label>مضمون او صنف:</label>
+        <input type="text" id="subject" placeholder="مثلاً: اناتومي - دویم سمسټر">
+        
+        <label>د پلان نوعیت:</label>
+        <select id="planType">
+            <option value="Annual/Semester">کلنی یا سمسټروار پلان</option>
+            <option value="Monthly">میاشتنی پلان</option>
+            <option value="Weekly/Lesson">اونیز یا لکچر پلان</option>
+        </select>
+
+        <label>ځانګړې لارښوونې:</label>
+        <textarea id="extra" rows="3" placeholder="امتحان، رخصتي یا ځانګړي اهداف دلته ولیکئ..."></textarea>
+        
+        <button class="main-btn" onclick="generateAcademicContent()"><i class="fas fa-wand-sparkles"></i> محتوا تولید کړه</button>
     </div>
+    
+    <div id="resultArea"></div>
+    <button id="pdfBtn" class="main-btn pdf-btn" onclick="saveToPDF()"><i class="fas fa-file-pdf"></i> په PDF کې ډاونلوډ کړئ</button>
+</div>
 
-    <div id="chatContainer">
-        <div class="message ai-msg">سلام عمران جانه! د دې لپاره چې کیلي دې بنده نشي، ما کوډ بدل کړ.
-اوس یوازې یو ځل پورته په **"کیلي" (Key)** نښه کلیک وکړه او خپله نوې API Key هلته ورکه. دا به یوازې ستا په موبایل کې خوندي پاتې شي.</div>
+<div class="container" id="aboutSection" style="display:none;">
+    <div class="card" style="text-align: center; border-right: none; border-top: 6px solid var(--primary);">
+        <div style="font-size: 50px; color: var(--primary); margin-bottom: 10px;"><i class="fas fa-university"></i></div>
+        <h2>Mohammad Imran Omar</h2>
+        <p><strong>ولایت:</strong> میدان وردګ | <strong>ولسوالی:</strong> جغتو</p>
+        <hr>
+        <p>دا اپلیکیشن (Academic Assistant) د تعلیمي پروسې د عصري کولو لپاره ډیزاین شوی دی.</p>
+        <div style="background: #f0f4f8; padding: 15px; border-radius: 10px; margin-top: 20px;">
+            <label>سیسټم فعال کړئ (API Key):</label>
+            <input type="password" id="apiKeyInput" placeholder="خپله کیلي دلته پیسټ کړئ...">
+            <button class="main-btn" onclick="lockKey()">فعالول</button>
+        </div>
     </div>
+</div>
 
-    <div class="input-area">
-        <input type="text" id="userInput" placeholder="پوښتنه ولیکئ...">
-        <i class="fas fa-paper-plane" onclick="sendMessage()" style="color: var(--main-blue); cursor: pointer; font-size: 20px;"></i>
-    </div>
+<div class="footer-branding">
+    Developed by Imran Omar | Jaghatu, Wardak
+</div>
 
-    <script>
-        // په کوډ کې کیلي نشته، نو روبوټونه یې نه شي موندلی
-        let secureApiKey = localStorage.getItem('user_gemini_key') || "";
+<script>
+    function switchTab(tab, e) {
+        document.querySelectorAll('.container').forEach(c => c.style.display = 'none');
+        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+        document.getElementById(tab + 'Section').style.display = 'block';
+        e.currentTarget.classList.add('active');
+    }
 
-        function saveKey() {
-            const key = prompt("خپله نوې API Key دلته پیسټ کړئ:");
-            if(key && key.startsWith("AIza")) {
-                secureApiKey = key;
-                localStorage.setItem('user_gemini_key', key);
-                alert("کیلي په بریالیتوب سره خوندي شوه! اوس پوښتنه کولی شئ.");
-            } else {
-                alert("ناسمه کیلي! مهرباني وکړئ سمه API Key ورکړئ.");
-            }
+    function lockKey() {
+        const k = document.getElementById('apiKeyInput').value;
+        if(k) { localStorage.setItem('academic_key', k); alert("سیسټم په بریالیتوب سره فعال شو!"); }
+    }
+
+    async function generateAcademicContent() {
+        const key = localStorage.getItem('academic_key');
+        if(!key) { alert("لومړی 'عمران عمر' برخې ته لاړ شئ او خپله کیلي ورکړئ."); return; }
+
+        const level = document.getElementById('level').value;
+        const subj = document.getElementById('subject').value;
+        const type = document.getElementById('planType').value;
+        const extra = document.getElementById('extra').value;
+
+        const resDiv = document.getElementById('resultArea');
+        resDiv.style.display = 'block';
+        resDiv.innerHTML = "<i class='fas fa-sync fa-spin'></i> Academic Assistant په کار بوخت دی...";
+
+        const promptText = `تاسو یو اکاډمیک مشاور یاست. د یو ${level} لپاره د ${subj} مضمون یو مسلکي ${type} پلان جوړ کړئ. 
+        پلان باید په پښتو او دري یا انګلیسي (د اړتیا په صورت کې) وي. برخې: اهداف، تدریس میتود، مهالویش، ارزیابي.
+        یادښتونه: ${extra}. 
+        په پای کې دا لاسلیک ولیکئ: Prepared by: Mohammad Imran Omar - Jaghatu, Wardak.`;
+
+        try {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({contents: [{parts: [{text: promptText}]}]})
+            });
+            const data = await response.json();
+            resDiv.innerText = data.candidates[0].content.parts[0].text;
+            document.getElementById('pdfBtn').style.display = 'flex';
+        } catch (e) {
+            resDiv.innerText = "تېروتنه! مهرباني وکړئ خپله کیلي یا VPN وګورئ.";
         }
+    }
 
-        async function sendMessage() {
-            const input = document.getElementById('userInput');
-            const chat = document.getElementById('chatContainer');
-            const text = input.value.trim();
+    function saveToPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const text = document.getElementById('resultArea').innerText;
+        doc.text(text, 10, 10, { maxWidth: 180 });
+        doc.save("Academic_Report.pdf");
+    }
+</script>
 
-            if(!text) return;
-            if(!secureApiKey) {
-                alert("مهرباني وکړئ لومړی په پورته نښه کلیک وکړئ او کیلي تنظیم کړئ.");
-                return;
-            }
-
-            chat.innerHTML += `<div class="message user-msg">${text}</div>`;
-            input.value = "";
-            
-            const aiDiv = document.createElement('div');
-            aiDiv.className = "message ai-msg";
-            aiDiv.innerText = "نکسس ځواب لیکي...";
-            chat.appendChild(aiDiv);
-            chat.scrollTop = chat.scrollHeight;
-
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${secureApiKey}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: text }] }] })
-                });
-
-                const data = await response.json();
-                if(data.candidates) {
-                    aiDiv.innerText = data.candidates[0].content.parts[0].text;
-                } else {
-                    aiDiv.innerText = "تېروتنه: کیلي کار نه کوي یا بنده شوې ده.";
-                }
-            } catch (e) {
-                aiDiv.innerText = "ارتباط قطع شو. یو ځل VPN وګورئ.";
-            }
-            chat.scrollTop = chat.scrollHeight;
-        }
-
-        document.getElementById("userInput").addEventListener("keypress", (e) => {
-            if (e.key === "Enter") sendMessage();
-        });
-    </script>
 </body>
 </html>
