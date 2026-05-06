@@ -3,74 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus AI - Mohammad Imran Omar</title>
+    <title>Nexus AI - Smart Assistant</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5945219560773997" crossorigin="anonymous"></script>
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #2c3e50; --secondary: #3498db; --accent: #e74c3c; --light: #f4f7f6; }
-        body { font-family: 'Arial', sans-serif; background-color: var(--light); margin: 0; padding: 0; color: #333; }
-        .header { background: var(--primary); color: white; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .container { max-width: 600px; margin: 20px auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        .profile-card { border-right: 5px solid var(--secondary); background: #f9f9f9; padding: 15px; margin-bottom: 20px; border-radius: 5px; text-align: right; }
-        .nexus-box { background: #fff; border: 2px solid var(--secondary); border-radius: 10px; padding: 15px; margin: 15px 0; }
-        .btn { background: var(--secondary); color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; width: 100%; font-size: 16px; transition: 0.3s; margin-top: 10px; }
-        .btn:hover { background: #2980b9; transform: scale(1.02); }
-        .ad-slot { background: #eee; border: 1px dashed #bbb; height: 100px; display: flex; align-items: center; justify-content: center; color: #888; font-size: 12px; margin: 15px 0; border-radius: 8px; }
-        input[type="text"] { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        footer { margin-top: 30px; font-size: 12px; color: #777; padding-bottom: 20px; }
+        :root { --main-blue: #007bff; --gradient: linear-gradient(135deg, #007bff, #00d4ff); --dark: #1e1e1e; --light-bg: #f0f2f5; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--light-bg); margin: 0; overflow-x: hidden; }
+        
+        /* Header & Navigation */
+        .top-nav { background: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 15px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-weight: bold; font-size: 22px; color: var(--main-blue); letter-spacing: 1px; }
+
+        /* Main App Interface */
+        .app-container { max-width: 480px; margin: 20px auto; padding: 15px; }
+        .chat-screen { background: white; border-radius: 25px; height: 350px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .ai-msg { background: #f1f0f0; padding: 12px 18px; border-radius: 18px 18px 18px 0; align-self: flex-start; max-width: 80%; font-size: 15px; line-height: 1.5; }
+
+        /* Modern Input Container */
+        .input-bar { background: white; border-radius: 50px; padding: 8px 15px; display: flex; align-items: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .input-bar input { border: none; outline: none; flex: 1; padding: 12px; font-size: 16px; background: transparent; }
+        .send-icon { color: var(--main-blue); font-size: 20px; cursor: pointer; margin-right: 10px; }
+
+        /* Multimedia Buttons */
+        .media-dock { display: flex; justify-content: space-around; margin-top: 25px; background: white; padding: 15px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .media-btn { display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.3s; color: #555; }
+        .media-btn i { font-size: 24px; margin-bottom: 5px; color: var(--main-blue); }
+        .media-btn span { font-size: 12px; font-weight: 500; }
+        .media-btn:hover { transform: translateY(-5px); color: var(--main-blue); }
+
+        /* Settings Slide-up Panel */
+        #settingsPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; }
+        .panel-content { position: absolute; bottom: 0; width: 100%; background: white; border-radius: 35px 35px 0 0; padding: 40px 25px; box-sizing: border-box; animation: slideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        @keyframes slideIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        .user-profile { text-align: center; margin-bottom: 25px; }
+        .user-profile i { font-size: 60px; color: var(--main-blue); background: #e7f1ff; padding: 20px; border-radius: 50%; }
+        .data-list { border-top: 1px solid #eee; margin-top: 15px; }
+        .data-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #f9f9f9; font-size: 15px; }
+        .data-item .label { color: #888; }
+        .data-item .val { font-weight: 600; color: #333; }
+        .close-panel { width: 100%; margin-top: 25px; padding: 15px; border: none; border-radius: 15px; background: var(--main-blue); color: white; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h1>Nexus AI | نکسس</h1>
-    <p>ستاسو د تحقیق او ساینس هوښیار مرستیال</p>
-</div>
+    <nav class="top-nav">
+        <i class="fas fa-bars-staggered" onclick="openPanel()" style="font-size: 20px; cursor: pointer;"></i>
+        <div class="logo">NEXUS AI</div>
+        <i class="fas fa-circle-user" style="font-size: 24px; color: #ccc;"></i>
+    </nav>
 
-<div class="container">
-    <div class="profile-card">
-        <h3 style="margin:0; color: var(--secondary);">د څیړونکي پیژندنه</h3>
-        <p><strong>نوم:</strong> محمد عمران عمر</p>
-        <p><strong>څانګه:</strong> کابل پوهنتون - پيداګوژي</p>
-        <p><strong>موضوع:</strong> د تحصیلي خدماتو کیفیت او د محصلینو پرمختګ</p>
+    <div class="app-container">
+        <div class="chat-screen" id="chatBox">
+            <div class="ai-msg">سلام محمد عمران جان! زه نکسس یم. څنګه مرسته درسره کولی شم؟</div>
+        </div>
+
+        <div class="input-bar">
+            <i class="fas fa-paper-plane send-icon" onclick="sendMsg()"></i>
+            <input type="text" id="msgInput" placeholder="پوښتنه ولیکئ...">
+        </div>
+
+        <div class="media-dock">
+            <label class="media-btn">
+                <i class="fas fa-camera-retro"></i>
+                <span>عکس</span>
+                <input type="file" accept="image/*" style="display:none" onchange="notify('عکس انتخاب شو')">
+            </label>
+            <div class="media-btn" onclick="notify('مایک فعال شو')">
+                <i class="fas fa-microphone-lines"></i>
+                <span>غږ</span>
+            </div>
+            <label class="media-btn">
+                <i class="fas fa-folder-open"></i>
+                <span>فایل</span>
+                <input type="file" style="display:none" onchange="notify('فایل انتخاب شو')">
+            </label>
+        </div>
     </div>
 
-    <div class="ad-slot">د ګوګل اعلانونه به دلته ښکاري (Top Ad)</div>
-
-    <div class="nexus-box">
-        <h3>له هوښیار مرستیال څخه وپوښتئ:</h3>
-        <input type="text" id="userInput" placeholder="خپله پوښتنه دلته ولیکئ...">
-        <button class="btn" onclick="askAi()">ځواب ترلاسه کړئ</button>
-        <p id="response" style="margin-top: 15px; color: #555; font-style: italic;"></p>
+    <div id="settingsPanel" onclick="closePanel()">
+        <div class="panel-content" onclick="event.stopPropagation()">
+            <div style="width: 40px; height: 4px; background: #ddd; margin: -15px auto 20px; border-radius: 10px;"></div>
+            <div class="user-profile">
+                <i class="fas fa-user-graduate"></i>
+                <h2 style="margin: 15px 0 5px;">محمد عمران عمر</h2>
+                <span style="color: #007bff; font-weight: 500;">ایډمین او جوړونکی</span>
+            </div>
+            
+            <div class="data-list">
+                <div class="data-item"><span class="label">پوهنتون</span><span class="val">کابل پوهنتون</span></div>
+                <div class="data-item"><span class="label">څانګه</span><span class="val">پیداګوژي</span></div>
+                <div class="data-item"><span class="label">موقعیت</span><span class="val">کابل، افغانستان</span></div>
+                <div class="data-item"><span class="label">اپلیکیشن</span><span class="val">Nexus AI v2.0</span></div>
+            </div>
+            
+            <button class="close-panel" onclick="closePanel()">بندول</button>
+        </div>
     </div>
 
-    <div class="ad-slot">د ګوګل اعلانونه به دلته ښکاري (Bottom Ad)</div>
-
-    <div style="display: flex; gap: 10px;">
-        <button class="btn" style="background: #27ae60;" onclick="alert('د SERVQUAL سروې ډیټا تحلیل پیل شو...')">د کیفیت سروې</button>
-        <button class="btn" style="background: var(--primary);" onclick="window.location.reload()">تازه کول</button>
-    </div>
-
-    <footer>
-        <p>© ۲۰۲۶ - ټول حقونه د محمد عمران عمر سره خوندي دي.</p>
-        <p>کابل، افغانستان</p>
-    </footer>
-</div>
-
-<script>
-    function askAi() {
-        const input = document.getElementById('userInput').value;
-        const responseArea = document.getElementById('response');
-        if(input.trim() === "") {
-            responseArea.innerText = "مهرباني وکړئ خپله پوښتنه ولیکئ.";
-            return;
+    <script>
+        function openPanel() { document.getElementById('settingsPanel').style.display = 'block'; }
+        function closePanel() { document.getElementById('settingsPanel').style.display = 'none'; }
+        
+        function notify(text) {
+            const box = document.getElementById('chatBox');
+            box.innerHTML += `<div class="ai-msg" style="color: #007bff; border-right: 3px solid #007bff;">${text} په بریالیتوب سره ترسره شو.</div>`;
+            box.scrollTop = box.scrollHeight;
         }
-        responseArea.innerText = "Nexus AI فکر کوي... ستاسو ځواب د تحقیق په اساس چمتو کیږي.";
-        setTimeout(() => {
-            responseArea.innerText = "عمران جانه، دا فیچر به ډیر ژر ستا له خپل API سره وصل شي.";
-        }, 1500);
-    }
-</script>
 
+        function sendMsg() {
+            const input = document.getElementById('msgInput');
+            const box = document.getElementById('chatBox');
+            if(input.value.trim() !== "") {
+                box.innerHTML += `<div class="ai-msg" style="align-self: flex-end; background: #007bff; color: white; border-radius: 18px 18px 0 18px;">${input.value}</div>`;
+                input.value = "";
+                box.scrollTop = box.scrollHeight;
+                setTimeout(() => {
+                    box.innerHTML += `<div class="ai-msg">زه ستاسو په ځواب کار کوم...</div>`;
+                    box.scrollTop = box.scrollHeight;
+                }, 800);
+            }
+        }
+    </script>
 </body>
 </html>
