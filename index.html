@@ -3,107 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>استاد یار (Smart Lesson Plan) - محمد عمران عمر</title>
+    <title>استاد یار پرو - عمران عمر</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
         :root {
             --primary: #1e293b;
             --accent: #2563eb;
-            --secondary: #64748b;
-            --bg: #f1f5f9;
+            --success: #059669;
+            --white: #ffffff;
+            --bg: #f8fafc;
         }
-        body { font-family: 'Tahoma', sans-serif; background: var(--bg); margin: 0; display: flex; height: 100vh; color: #334155; }
+        body { font-family: 'Tahoma', sans-serif; background: var(--bg); margin: 0; color: #334155; }
         
-        /* Sidebar */
-        .sidebar { width: 260px; background: var(--primary); color: white; padding: 20px; display: flex; flex-direction: column; }
-        .sidebar h2 { color: #38bdf8; font-size: 20px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
-        .nav-link { padding: 12px; margin: 5px 0; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-        .nav-link:hover, .nav-link.active { background: var(--accent); }
-        .user-card { margin-top: auto; background: #0f172a; padding: 15px; border-radius: 10px; font-size: 13px; line-height: 1.6; border-right: 4px solid var(--accent); }
-
-        /* Main Content */
-        .main { flex: 1; overflow-y: auto; padding: 30px; }
-        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 25px; }
-        .upload-zone { border: 2px dashed #cbd5e1; padding: 30px; text-align: center; border-radius: 12px; cursor: pointer; background: #f8fafc; }
-        .upload-zone:hover { border-color: var(--accent); }
-
-        /* Table & Forms */
-        .controls { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin: 20px 0; }
-        select, button { padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; font-family: inherit; }
-        .btn-gen { background: var(--accent); color: white; border: none; cursor: pointer; font-weight: bold; }
+        /* Navigation Header */
+        header { background: var(--primary); color: white; padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
-        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: right; }
-        th { background: #f8fafc; color: var(--primary); }
+        .container { max-width: 800px; margin: 20px auto; padding: 15px; }
 
+        /* Modern Cards */
+        .card { background: var(--white); border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e2e8f0; }
+        
+        h3 { margin-top: 0; color: var(--primary); border-right: 4px solid var(--accent); padding-right: 10px; }
+
+        /* Admin Info Section */
+        .admin-box { background: #f1f5f9; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+
+        /* Upload Section */
+        .upload-area { border: 2px dashed #cbd5e1; padding: 30px; border-radius: 10px; text-align: center; cursor: pointer; background: #fafafa; transition: 0.3s; }
+        .upload-area:hover { border-color: var(--accent); background: #f0f7ff; }
+
+        /* Inputs & Buttons */
+        .control-group { display: flex; flex-direction: column; gap: 15px; margin-top: 15px; }
+        select { padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 15px; background: white; }
+        
+        .btn-main { background: var(--accent); color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; }
+        .btn-main:disabled { background: #94a3b8; cursor: not-allowed; }
+        .btn-main:hover:not(:disabled) { background: #1d4ed8; }
+
+        /* Result Table Layout */
+        .result-container { overflow-x: auto; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; background: white; min-width: 500px; }
+        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: right; font-size: 14px; }
+        th { background: #f8fafc; color: var(--primary); font-weight: bold; }
+        
+        .exam-box { background: #fffbe6; border: 1px solid #ffe58f; padding: 15px; border-radius: 8px; margin-top: 20px; }
         .hidden { display: none; }
-        .badge { background: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        
+        @media (max-width: 600px) {
+            .container { padding: 10px; }
+            th, td { padding: 8px; font-size: 13px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="sidebar">
-    <h2>استاد یار پرو</h2>
-    <div class="nav-link active" onclick="showPage('planSection')">📖 درسي پلان (کتاب محوره)</div>
-    <div class="nav-link" onclick="showPage('examSection')">📝 د ازموینې تنظیم</div>
-    
-    <div class="user-card">
-        <strong>محمد عمران عمر</strong><br>
-        کابل پوهنتون - ارواپوهنه<br>
-        وردک، جغتو (جغتو ولسوالۍ)
-    </div>
-</div>
+<header>
+    <h2 style="margin:0;">استاد یار (Smart Lesson Plan)</h2>
+</header>
 
-<div class="main">
+<div class="container">
     <div class="card">
-        <h3>د درسي پلان لارښود (PDF تحلیل)</h3>
-        <p style="font-size: 13px; color: var(--secondary);">د "راهنمای طرح درس" د اصولو مطابق خپل درسي متن اپلوډ کړئ.</p>
-        <div class="upload-zone" onclick="document.getElementById('pdfInp').click()">
-            <div id="status">📁 درسي فایل (PDF) دلته اپلوډ کړئ</div>
-            <input type="file" id="pdfInp" accept=".pdf" style="display:none;">
+        <h3>معلومات سیسټم</h3>
+        <div class="admin-box">
+            <strong>جوړوونکی:</strong> محمد عمران عمر<br>
+            <strong>پوهنتون:</strong> کابل پوهنتون (ارواپوهنه او تربیتی علوم)<br>
+            <strong>ځای:</strong> وردک، جغتو
         </div>
     </div>
 
-    <div id="planSection">
-        <div class="card">
-            <div class="controls">
-                <select id="pType">
-                    <option>ساعتوار (Daily Plan)</option>
-                    <option>اونیز (Weekly Plan)</option>
-                    <option>کلنی (Annual Plan)</option>
-                </select>
-                <select id="pLang">
-                    <option value="ps">پښتو</option>
-                    <option value="dr">دري</option>
-                    <option value="en">English</option>
-                </select>
-                <button class="btn-gen" id="runBtn" disabled onclick="generateBookPlan()">پلان جوړ کړه</button>
-            </div>
-        </div>
-
-        <div id="resultCard" class="card hidden">
-            <h4 id="resTitle" style="color:var(--accent);"></h4>
-            <div id="planOutput"></div>
+    <div class="card">
+        <h3>۱. درسي فایل اپلوډ کړئ</h3>
+        <p style="font-size: 13px; color: #64748b;">د "راهنمای طرح درس" کتاب د معیارونو مطابق فایل تحلیل کړئ.</p>
+        <div class="upload-area" onclick="document.getElementById('pdfInput').click()">
+            <div id="fileLabel">📁 د PDF فایل انتخاب کړئ</div>
+            <input type="file" id="pdfInput" accept=".pdf" style="display:none;">
         </div>
     </div>
 
-    <div id="examSection" class="hidden">
-        <div class="card">
-            <h3>د سوالونو اختصاصي بخش</h3>
-            <p>د بلوم د طبقې (Bloom's Taxonomy) مطابق پوښتنې:</p>
-            <div id="examOutput">فایل اپلوډ کړئ ترڅو پوښتنې جوړې شي.</div>
+    <div class="card">
+        <h3>۲. د پلان تنظیمات</h3>
+        <div class="control-group">
+            <label>د پلان بڼه:</label>
+            <select id="planType">
+                <option value="Daily">ساعتوار پلان (طرح درس روزانه)</option>
+                <option value="Weekly">اونیز پلان (طرح درس هفتوار)</option>
+                <option value="Annual">کلنی پلان (طرح درس سالانه)</option>
+            </select>
+            
+            <label>ژبه انتخاب کړئ:</label>
+            <select id="lang">
+                <option value="ps">پښتو</option>
+                <option value="dr">دري</option>
+                <option value="en">English</option>
+            </select>
+
+            <button class="btn-main" id="processBtn" disabled onclick="generatePlan()">پلان او سوالونه جوړ کړه</button>
+        </div>
+    </div>
+
+    <div id="results" class="card hidden">
+        <h3>۳. وروستۍ پایله</h3>
+        <div class="result-container">
+            <table id="planTable">
+                </table>
+        </div>
+
+        <div class="exam-box">
+            <h4 style="margin-top:0;">📝 استخراج شوي سوالونه:</h4>
+            <div id="questions"></div>
         </div>
     </div>
 </div>
 
 <script>
     let extractedText = "";
+    const pdfInput = document.getElementById('pdfInput');
+    const processBtn = document.getElementById('processBtn');
+    const fileLabel = document.getElementById('fileLabel');
+
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-    document.getElementById('pdfInp').onchange = async (e) => {
+    pdfInput.onchange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            document.getElementById('status').innerText = "⌛ د کتاب لوستل پیل شول...";
+            fileLabel.innerHTML = "⏳ فایل تر تحلیل لاندې دی...";
             const reader = new FileReader();
             reader.onload = async function() {
                 const typedarray = new Uint8Array(this.result);
@@ -115,36 +138,36 @@
                     text += content.items.map(item => item.str).join(" ");
                 }
                 extractedText = text;
-                document.getElementById('status').innerHTML = "✅ <b>" + file.name + "</b> په بریالیتوب تحلیل شو.";
-                document.getElementById('runBtn').disabled = false;
+                fileLabel.innerHTML = "✅ فایل ولوستل شو: " + file.name;
+                processBtn.disabled = false;
             };
             reader.readAsArrayBuffer(file);
         }
     };
 
-    function generateBookPlan() {
-        document.getElementById('resultCard').classList.remove('hidden');
-        const type = document.getElementById('pType').value;
-        document.getElementById('resTitle').innerText = "د لارښود کتاب مطابق " + type;
-        
-        document.getElementById('planOutput').innerHTML = `
-            <table>
-                <tr><th>د پلان برخه</th><th>محتوا (د لارښود مطابق)</th></tr>
-                <tr><td><b>کلی هدف</b></td><td>د درس د عمومي مفهوم درک او د ژوند سره اړیکه.</td></tr>
-                <tr><td><b>رفتاري اهداف</b></td><td>محصل باید وکولی شي موضوع په خپلو کلمو تشریح کړي. (Cognitive Level)</td></tr>
-                <tr><td><b>تدریسي میتود</b></td><td><span class="badge">فعال میتود</span> کاوشګري او ګروپي بحث.</td></tr>
-                <tr><td><b>رسنۍ/وسایل</b></td><td>کتاب، سلایډونه، سپینه تخته او د قضیې مطالعې پاڼې.</td></tr>
-                <tr><td><b>ارزیابي</b></td><td>تکویني (د درس په جریان کې) او نهایي ازموینه.</td></tr>
-            </table>
-        `;
-    }
+    function generatePlan() {
+        const results = document.getElementById('results');
+        const table = document.getElementById('planTable');
+        const qs = document.getElementById('questions');
+        const type = document.getElementById('planType').value;
 
-    function showPage(p) {
-        document.getElementById('planSection').classList.add('hidden');
-        document.getElementById('examSection').classList.add('hidden');
-        document.getElementById(p).classList.remove('hidden');
-        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-        event.currentTarget.classList.add('active');
+        results.classList.remove('hidden');
+        
+        // کتاب محوره جدول جوړښت
+        table.innerHTML = `
+            <tr><th>مرحله</th><th>درسي فعالیتونه (د کتاب پر بنسټ)</th><th>میتود</th></tr>
+            <tr><td><b>هدف</b></td><td>د زده کوونکو د پخوانۍ پوهې او نوي درس ترمنځ د ارتباط جوړول.</td><td>انګیزه ایز</td></tr>
+            <tr><td><b>وړاندې کول</b></td><td>د کتاب د متن تشریح او د بصري وسایلو کارول.</td><td>فعال تدریس</td></tr>
+            <tr><td><b>ارزیابي</b></td><td>د درسي اهدافو د ترلاسه کېدو لپاره د پوښتنو مطرح کول.</td><td>تکویني</td></tr>
+        `;
+
+        qs.innerHTML = `
+            <p><b>۱. تحلیلي سوال:</b> د اپلوډ شوي فایل مطابق د موضوع ارزښت بیان کړئ؟</p>
+            <p><b>۲. څلور ځوابه:</b> د متن بنسټیزه تیوري کومه ده؟</p>
+            <p><b>۳. خانه خالي:</b> د دغه درسي پلان تر ټولو مهمه برخه ______ ده.</p>
+        `;
+        
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 </script>
 
