@@ -3,339 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>استاد یار | هوشمند</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>استاد یار - Ustad Yar</title>
+    <link rel="stylesheet" href="https://cloudflare.com">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;700&display=swap');
-        body { font-family: 'Noto Naskh Arabic', serif; background-color: #f3f4f6; }
-        
-        /* چاپ ډیزاین */
-        @media print {
-            .no-print { display: none !important; }
-            body { background-color: white; }
-            .print-border { border: 2px solid black !important; }
-            td, th { border: 1px solid black !important; color: black !important; }
-            .bg-gray-800 { background-color: #e5e7eb !important; color: black !important; } 
-            .text-white { color: black !important; }
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e67e22;
+            --light-bg: #f4f7f6;
+            --white: #ffffff;
         }
 
-        /* انیمیشنونه */
-        .fade-in { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: var(--primary-color);
+            position: fixed;
+            right: 0;
+            top: 0;
+            color: white;
+            padding: 20px;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        .menu-item {
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-item:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-right: 280px;
+            padding: 20px;
+        }
+
+        .header {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            text-align: left;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Cards Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            border-top: 4px solid var(--secondary-color);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card i {
+            font-size: 2.5em;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px dashed var(--secondary-color);
+            margin-top: 20px;
+        }
+
+        .btn-ai {
+            background: var(--accent-color);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .btn-ai:hover {
+            background: #d35400;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.8em;
+            color: #888;
+        }
     </style>
 </head>
-<body class="text-gray-800 flex h-screen overflow-hidden">
+<body>
 
-    <!-- ۱. مینو (Sidebar) -->
-    <aside class="w-72 bg-slate-900 text-white hidden md:flex flex-col shadow-2xl z-20 no-print">
-        <div class="p-6 border-b border-slate-700">
-            <h1 class="text-2xl font-bold flex items-center gap-2">
-                <i class="fas fa-robot text-indigo-500"></i> استاد یار
-            </h1>
-            <p class="text-xs text-slate-400 mt-1">نسخه ۵.۰ (Full Content)</p>
-        </div>
-        
-        <!-- د ژبې انتخاب (Language Selector) -->
-        <div class="p-4">
-            <label class="text-xs text-slate-400 uppercase font-bold">د سیستم ژبه (Language)</label>
-            <div class="mt-2 flex bg-slate-800 rounded-lg p-1">
-                <button onclick="setLanguage('ps')" id="lang-ps" class="flex-1 py-2 text-sm rounded-md bg-indigo-600 text-white transition">پښتو</button>
-                <button onclick="setLanguage('fa')" id="lang-fa" class="flex-1 py-2 text-sm rounded-md text-slate-300 hover:bg-slate-700 transition">دری</button>
+    <div class="sidebar">
+        <h2>استاد یار</h2>
+        <div class="menu-item"><i class="fas fa-home"></i> کور پاڼه</div>
+        <div class="menu-item"><i class="fas fa-calendar-alt"></i> کلنی پلان</div>
+        <div class="menu-item"><i class="fas fa-book"></i> ساعتوار پلان</div>
+        <div class="menu-item"><i class="fas fa-file-invoice"></i> د سوالونو بانک</div>
+        <div class="menu-item"><i class="fas fa-cog"></i> تنظیمات</div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <div>
+                <h1>ښه راغلاست، محترم استاد!</h1>
+                <p>د درسي پلانونو او سوالونو اتومات سیستم</p>
+            </div>
+            <div class="user-info">
+                <strong>جوړونکی: محمد عمران عمر</strong><br>
+                وردګ، جغتو | استاد یار اپلیکیشن
             </div>
         </div>
 
-        <div class="flex-1 p-4">
-            <div class="bg-slate-800/50 rounded-xl p-4 border border-slate-700">
-                <h3 class="text-sm font-bold text-indigo-400 mb-2"><i class="fas fa-info-circle ml-2"></i>لارښود</h3>
-                <p class="text-xs text-slate-300 leading-relaxed">
-                    ۱. فایل اپلود کړئ.<br>
-                    ۲. ژبه وټاکئ.<br>
-                    ۳. "پلان جوړول" ووهئ.<br>
-                    سیستم به د فایل له داخل څخه موضوعات استخراج کړي.
-                </p>
+        <div class="grid">
+            <div class="card">
+                <i class="fas fa-clock"></i>
+                <h3>ساعتوار پلان</h3>
+                <p>د نن ورځې تدریس تنظیم کړئ</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-layer-group"></i>
+                <h3>میاشتنی پلان</h3>
+                <p>د میاشتې اهداف وټاکئ</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-graduation-cap"></i>
+                <h3>د امتحان نیټې</h3>
+                <p>رخصتي او پارچې تنظیم کړئ</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-language"></i>
+                <h3>ژبه / Language</h3>
+                <p>Pashto, Dari, English</p>
             </div>
         </div>
-    </aside>
 
-    <!-- ۲. اصلي کاري ساحه -->
-    <main class="flex-1 flex flex-col h-full relative">
-        
-        <!-- سرپاڼه (Header) -->
-        <header class="h-16 bg-white border-b flex items-center justify-between px-6 shadow-sm no-print">
-            <h2 class="font-bold text-lg text-slate-700" id="header-title">د درسي پلانونو اتومات سیستم</h2>
-            <div class="flex items-center gap-3">
-                <span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full border border-green-200 hidden md:block">
-                    <i class="fas fa-wifi ml-1"></i> آنلاین
-                </span>
-                <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold border border-indigo-200">ع</div>
-            </div>
-        </header>
-
-        <!-- محتوا (Scrollable) -->
-        <div class="flex-1 overflow-y-auto p-4 md:p-8 bg-slate-50" id="main-content">
-            
-            <!-- A. د فایل او تنظیماتو برخه -->
-            <div class="max-w-5xl mx-auto mb-8 no-print">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                    
-                    <!-- د اپلود ساحه -->
-                    <div class="border-2 border-dashed border-indigo-300 bg-indigo-50/50 rounded-xl p-8 text-center transition hover:bg-indigo-50 cursor-pointer relative overflow-hidden group" onclick="document.getElementById('file-upload').click()">
-                        <input type="file" id="file-upload" class="hidden" onchange="handleFile(this)">
-                        
-                        <!-- ډیفالټ حالت -->
-                        <div id="upload-default">
-                            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm group-hover:scale-110 transition">
-                                <i class="fas fa-cloud-upload-alt text-3xl text-indigo-600"></i>
-                            </div>
-                            <h3 class="text-lg font-bold text-slate-800" id="upload-text">خپل درسي فایل (PDF/Word) دلته راکش کړئ</h3>
-                            <p class="text-sm text-slate-500 mt-1">سیستم ستاسو د کتاب متن لولي او په پلان یې بدلوي</p>
-                        </div>
-
-                        <!-- د فایل لوستلو حالت (Simulated Scanning) -->
-                        <div id="upload-scanning" class="hidden absolute inset-0 bg-white flex flex-col items-center justify-center z-10">
-                            <div class="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mb-3"></div>
-                            <p class="font-bold text-indigo-900 animate-pulse" id="scanning-text">د فایل لوستل روان دي...</p>
-                            <p class="text-xs text-slate-500 mt-1 font-mono text-left w-64 truncate" id="scan-log">Scanning page 1...</p>
-                        </div>
-                    </div>
-
-                    <!-- د تولید تڼۍ -->
-                    <div class="flex justify-end mt-6">
-                        <button onclick="generatePlan()" id="generate-btn" class="bg-slate-300 text-slate-500 px-8 py-3 rounded-xl font-bold shadow-sm cursor-not-allowed flex items-center gap-2" disabled>
-                            <i class="fas fa-magic"></i>
-                            <span id="btn-text">پلان جوړ کړئ</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- B. پایله: اکاډمیک جدول (Result) -->
-            <div id="result-area" class="max-w-6xl mx-auto hidden fade-in">
-                
-                <!-- د چاپ او ډاونلوډ تڼۍ -->
-                <div class="flex justify-between items-center mb-4 no-print">
-                    <div class="flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full bg-green-500"></span>
-                        <p class="text-sm font-bold text-slate-700" id="source-file-label">منبع: نامعلوم</p>
-                    </div>
-                    <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-sm shadow-lg transition flex items-center gap-2">
-                        <i class="fas fa-print"></i> چاپ (Print)
-                    </button>
-                </div>
-
-                <!-- د پوهنتون فارم (A4 Paper Style) -->
-                <div class="bg-white p-1 md:p-8 shadow-2xl print-border mx-auto w-full max-w-[210mm] min-h-[297mm] print-area">
-                    
-                    <!-- سرلیک (Header) -->
-                    <div class="text-center border-b-2 border-black pb-4 mb-6">
-                        <h1 class="text-xl font-bold text-black mb-2" id="table-university">د لوړو زده کړو وزارت</h1>
-                        <h2 class="text-lg font-bold text-black" id="table-faculty">پوهنځی: طب / ساینس</h2>
-                        <h3 class="text-md font-medium text-slate-700 mt-1 bg-gray-100 inline-block px-4 py-1 rounded border border-gray-300" id="table-title">د درسي ساعت تفصیلي طرحه (Lesson Plan)</h3>
-                    </div>
-
-                    <!-- د استاد او مضمون معلومات -->
-                    <div class="grid grid-cols-2 gap-4 mb-6 text-sm border border-black p-4 bg-gray-50">
-                        <div><span class="font-bold">استاد:</span> محمد عمران عمر</div>
-                        <div><span class="font-bold">مضمون:</span> <span id="subject-name">...</span></div>
-                        <div><span class="font-bold">نیټه:</span> ۱۴۰۳/۰۲/۱۶</div>
-                        <div><span class="font-bold">سمستر:</span> دویم</div>
-                    </div>
-
-                    <!-- اصلي جدول (Complex Table) -->
-                    <table class="w-full text-sm text-right border-collapse border border-black">
-                        <thead>
-                            <tr class="bg-gray-800 text-white text-xs text-center">
-                                <th rowspan="2" class="border border-gray-400 p-2 w-12">وخت</th>
-                                <th rowspan="2" class="border border-gray-400 p-2 w-40" id="th-topic">موضوع / سرلیکونه</th>
-                                <th colspan="3" class="border border-gray-400 p-2" id="th-objectives">اهداف (Objectives)</th>
-                                <th rowspan="2" class="border border-gray-400 p-2 w-24" id="th-method">میټود</th>
-                                <th rowspan="2" class="border border-gray-400 p-2 w-24" id="th-evaluation">ارزیابي</th>
-                            </tr>
-                            <tr class="bg-gray-700 text-white text-[10px] text-center">
-                                <th class="border border-gray-400 p-1" id="th-k">پوهه (Knowledge)</th>
-                                <th class="border border-gray-400 p-1" id="th-s">مهارت (Skill)</th>
-                                <th class="border border-gray-400 p-1" id="th-a">ذهنی (Attitude)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="plan-tbody" class="text-xs">
-                            <!-- دلته به د فایل محتوا راځي -->
-                        </tbody>
-                    </table>
-
-                    <!-- فوټر -->
-                    <div class="mt-12 flex justify-between text-sm px-8">
-                        <div class="text-center">
-                            <p class="font-bold border-t border-black pt-2 w-32">د استاد لاسلیک</p>
-                        </div>
-                        <div class="text-center">
-                            <p class="font-bold border-t border-black pt-2 w-32">د ډیپارټمنټ تایید</p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
+        <div class="upload-section">
+            <i class="fas fa-cloud-upload-alt" style="font-size: 4em; color: #ccc;"></i>
+            <h2>درسي فایل دلته اپلوډ کړئ</h2>
+            <p>PDF، Word یا عکس انتخاب کړئ ترڅو AI ترې سوالونه او پلان جوړ کړي.</p>
+            <input type="file" id="fileInput" style="display:none">
+            <button class="btn-ai" onclick="document.getElementById('fileInput').click()">فایل انتخاب کړئ</button>
+            <br>
+            <button class="btn-ai" style="background: var(--secondary-color);">د پلانونو او سوالونو تولید (AI)</button>
         </div>
-    </main>
 
-    <script>
-        // === ۱. متغیرونه او تنظیمات ===
-        let currentLang = 'ps';
-        let uploadedFile = null;
+        <footer>
+            د استاد یار اپلیکیشن ټول حقونه له محمد عمران عمر سره خوندي دي - جغتو، وردګ
+        </footer>
+    </div>
 
-        // د ژبو ډکشنري (Translation Dictionary)
-        const translations = {
-            ps: {
-                title: "د درسي پلانونو اتومات سیستم",
-                upload: "خپل درسي فایل (PDF) دلته راکش کړئ",
-                btn: "پلان جوړ کړئ",
-                reading: "د فایل لوستل روان دي...",
-                source: "منبع فایل",
-                uni: "د لوړو زده کړو وزارت",
-                faculty: "پوهنځی: ساینس / طب",
-                planTitle: "د درسي ساعت تفصیلي طرحه (Daily Plan)",
-                headers: { topic: "موضوع / سرلیک", obj: "اهداف", method: "میتود", eval: "ارزیابي", k: "پوهه", s: "مهارت", a: "ذهني" }
-            },
-            fa: {
-                title: "سیستم خودکار طرح درس",
-                upload: "فایل درسی (PDF) خود را اینجا بکشید",
-                btn: "ایجاد پلان",
-                reading: "در حال خواندن فایل...",
-                source: "منبع فایل",
-                uni: "وزارت تحصیلات عالی",
-                faculty: "پوهنځی: ساینس / طب",
-                planTitle: "فرم طرح درس روزانه (Daily Plan)",
-                headers: { topic: "رئوس مطالب", obj: "اهداف رفتاری", method: "روش تدریس", eval: "ارزیابی", k: "دانش", s: "مهارت", a: "نگرش" }
-            }
-        };
-
-        // === ۲. د ژبې بدلول ===
-        function setLanguage(lang) {
-            currentLang = lang;
-            
-            // د بټنو سټایل
-            document.getElementById('lang-ps').className = lang === 'ps' ? "flex-1 py-2 text-sm rounded-md bg-indigo-600 text-white transition" : "flex-1 py-2 text-sm rounded-md text-slate-300 hover:bg-slate-700 transition";
-            document.getElementById('lang-fa').className = lang === 'fa' ? "flex-1 py-2 text-sm rounded-md bg-indigo-600 text-white transition" : "flex-1 py-2 text-sm rounded-md text-slate-300 hover:bg-slate-700 transition";
-
-            // د متنونو تازه کول
-            const t = translations[lang];
-            document.getElementById('header-title').innerText = t.title;
-            document.getElementById('upload-text').innerText = uploadedFile ? uploadedFile.name : t.upload;
-            document.getElementById('btn-text').innerText = t.btn;
-            document.getElementById('scanning-text').innerText = t.reading;
-            document.getElementById('source-file-label').innerText = `${t.source}: ${uploadedFile ? uploadedFile.name : ''}`;
-            document.getElementById('table-university').innerText = t.uni;
-            document.getElementById('table-faculty').innerText = t.faculty;
-            document.getElementById('table-title').innerText = t.planTitle;
-            
-            // د جدول سرلیکونه
-            document.getElementById('th-topic').innerText = t.headers.topic;
-            document.getElementById('th-objectives').innerText = t.headers.obj;
-            document.getElementById('th-method').innerText = t.headers.method;
-            document.getElementById('th-evaluation').innerText = t.headers.eval;
-            document.getElementById('th-k').innerText = t.headers.k;
-            document.getElementById('th-s').innerText = t.headers.s;
-            document.getElementById('th-a').innerText = t.headers.a;
-
-            // که مخکې پلان جوړ شوی وي، بیا یې جوړ کړئ (Re-render)
-            if(uploadedFile && !document.getElementById('result-area').classList.contains('hidden')) {
-                renderTableContent();
-            }
-        }
-
-        // === ۳. د فایل سمبالول (File Handling Simulation) ===
-        function handleFile(input) {
-            if (input.files.length > 0) {
-                uploadedFile = input.files[0];
-                const btn = document.getElementById('generate-btn');
-                
-                // UI Update
-                document.getElementById('upload-text').innerHTML = `<span class="text-indigo-600">${uploadedFile.name}</span>`;
-                document.getElementById('subject-name').innerText = uploadedFile.name.split('.')[0]; // د فایل له نوم څخه مضمون اخیستل
-                
-                // بټن فعالول
-                btn.disabled = false;
-                btn.className = "bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg cursor-pointer flex items-center gap-2 transition transform hover:-translate-y-1";
-            }
-        }
-
-        // === ۴. د پلان جوړول (Core Logic) ===
-        function generatePlan() {
-            const uploadDiv = document.getElementById('upload-default');
-            const scanDiv = document.getElementById('upload-scanning');
-            const scanLog = document.getElementById('scan-log');
-
-            // د سکین پیل
-            uploadDiv.classList.add('hidden');
-            scanDiv.classList.remove('hidden');
-
-            // د لاګونو ښودل (Simulation of Reading)
-            let steps = ["د پیژندنې لوستل...", "د لومړي فصل تحلیل...", "د سرلیکونو استخراج...", "د کلیدي کلمو پیژندنه..."];
-            let i = 0;
-            const interval = setInterval(() => {
-                scanLog.innerText = steps[i];
-                i++;
-                if (i >= steps.length) {
-                    clearInterval(interval);
-                    finishGeneration();
-                }
-            }, 600); // هره مرحله ۰.۶ ثانیې
-        }
-
-        function finishGeneration() {
-            document.getElementById('main-content').scrollTo({ top: 1000, behavior: 'smooth' });
-            document.getElementById('result-area').classList.remove('hidden');
-            document.getElementById('upload-scanning').classList.add('hidden');
-            document.getElementById('upload-default').classList.remove('hidden');
-            
-            renderTableContent();
-        }
-
-        // === ۵. د محتوا "تولید" (Content Generation) ===
-        function renderTableContent() {
-            const tbody = document.getElementById('plan-tbody');
-            tbody.innerHTML = ""; // پاکول
-
-            // دا هغه ډیټا ده چې ګویا له فایل څخه "لوستل" شوې ده
-            // موږ دلته د فایل د ډول پر اساس محتوا بدلوو
-            const fileName = uploadedFile ? uploadedFile.name.toLowerCase() : "";
-            let contentData = [];
-
-            if (currentLang === 'ps') {
-                // === پښتو محتوا ===
-                contentData = [
-                    { time: "۱۰", topic: "د مضمون پیژندنه (مقدمه)", k: "د موضوع تعریف او اهمیت", s: "د مثالونو ورکول", a: "د علاقې پیدا کول", m: "لکچر/خبرې", e: "شفهي پوښتنه" },
-                    { time: "۲۵", topic: "اصلي مفاهیم (له فصل ۱ څخه)", k: "د اجزاوو نومونه او دندې", s: "په شکل کې ښودل", a: "د مسؤلیت احساس", m: "ګروپي کار", e: "کتبي فعالیت" },
-                    { time: "۱۰", topic: "تحلیل او ننیجه ګیري", k: "د توپیرونو پیژندل", s: "د جدول ډکول", a: "دقت او توجه", m: "پوښتنه او ځواب", e: "د تخې سر کار" },
-                    { time: "۵", topic: "کورنۍ دنده", k: "د تمرین حل", s: "-", a: "-", m: "لارښوونه", e: "-" }
-                ];
-            } else {
-                // === دري محتوا ===
-                contentData = [
-                    { time: "۱۰", topic: "معرفی و مقدمه", k: "تعریف موضوع و اهمیت آن", s: "ارائه مثال‌ها", a: "ایجاد انگیزه", m: "سخنرانی", e: "پرسش شفاهی" },
-                    { time: "۲۵", topic: "مفاهیم کلیدی (از فصل ۱)", k: "نام‌گذاری اجزاء و وظایف", s: "نشان دادن در دیاگرام", a: "درک مسئولیت", m: "کار گروهی", e: "فعالیت کتبی" },
-                    { time: "۱۰", topic: "تحلیل و نتیجه‌گیری", k: "شناخت تفاوت‌ها", s: "خانه‌پری جدول", a: "دقت و توجه", m: "پرسش و پاسخ", e: "کار پای تخته" },
-                    { time: "۵", topic: "کار خانگی", k: "حل تمرینات صفحه ۲۰", s: "-", a: "-", m: "رهنمایی", e: "-" }
-                ];
-            }
-
-            // جدول ته د قطارونو اضافه کول
-            contentData.forEach((row, index) => {
-                const tr = document.createElement('tr');
-                tr.className = index % 2 === 0 ? "bg-white" : "bg-gray-50"; // د قطارونو رنګ بدلول
-                tr.innerHTML = `
-                    <td class="border border-gray-300 p-2 text-center font-bold">${row.time}</td>
-                    <td class="border border-gray-300 p-2 font-bold text-indigo-900">${row.topic}</td>
-                    <td class="border border-gray-300 p-2">${row.k}</td>
-                    <td class="border border-gray-300 p-2">${row.s}</td>
-                    <td class="border border-gray-300 p-2">${row.a}</td>
-                    <td class="border border-gray-300 p-2 text-center">${row.m}</td>
-                    <td class="border border-gray-300 p-2 text-center text-red-600 font-bold">${row.e}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-    </script>
 </body>
 </html>
