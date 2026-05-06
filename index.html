@@ -3,201 +3,83 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>استاد یار | Ustad Yar</title>
+<title>استاد یار</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f0f2f5;
-}
-
-header {
-    background: #1e88e5;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-size: 22px;
-}
-
-.container {
-    padding: 15px;
-    max-width: 600px;
-    margin: auto;
-}
-
-.card {
-    background: white;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 12px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-}
-
-h3 {
-    margin-top: 0;
-}
-
-input, select, button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-button {
-    background: #1e88e5;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #1565c0;
-}
-
-.output {
-    background: #eef4ff;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 8px;
-}
-
-footer {
-    text-align: center;
-    padding: 10px;
-    font-size: 12px;
-    color: gray;
-}
+body {font-family: Arial; margin:0; background:#f0f2f5;}
+header {background:#1e88e5;color:white;padding:15px;text-align:center;}
+.container {padding:15px; max-width:600px; margin:auto;}
+.card {background:white;padding:15px;margin-bottom:15px;border-radius:10px;}
+input,button {width:100%;padding:10px;margin-top:10px;border-radius:8px;}
+button {background:#1e88e5;color:white;border:none;}
+.output {background:#eef4ff;padding:10px;margin-top:10px;border-radius:8px;}
 </style>
 </head>
 
 <body>
 
-<header>📘 استاد یار | Ustad Yar</header>
+<header>📘 استاد یار</header>
 
 <div class="container">
 
 <div class="card">
-<h3>👤 معلومات</h3>
-<p>محمد عمران عمر | وردک - جغتو</p>
-</div>
-
-<div class="card">
-<h3>🌐 ژبه</h3>
-<select id="lang" onchange="changeLang()">
-<option value="ps">پښتو</option>
-<option value="dr">دری</option>
-<option value="en">English</option>
-</select>
-</div>
-
-<div class="card">
-<h3 id="planTitle">📚 درسي پلان</h3>
+<h3>📚 مضمون</h3>
 <input type="text" id="subject" placeholder="مضمون">
 <input type="text" id="topic" placeholder="موضوع">
-<button onclick="generatePlan()">پلان جوړ کړه</button>
-
-<div id="planOutput" class="output"></div>
 </div>
 
 <div class="card">
-<h3 id="qTitle">❓ سوالونه</h3>
-<button onclick="generateQuestions()">سوالونه جوړ کړه</button>
+<h3>📂 فایل اپلوډ</h3>
+<input type="file" id="file">
+<p id="fileName"></p>
+</div>
 
-<div id="questionOutput" class="output"></div>
+<div class="card">
+<button onclick="generateFromFile()">📊 د فایل نه پلان + سوالونه</button>
+
+<div id="output" class="output"></div>
 </div>
 
 </div>
-
-<footer>
-© 2026 - استاد یار
-</footer>
 
 <script>
-let lang = "ps";
+let fileText = "";
 
-function changeLang() {
-    lang = document.getElementById("lang").value;
+document.getElementById("file").addEventListener("change", function(e){
+    let file = e.target.files[0];
+    document.getElementById("fileName").innerText = file.name;
 
-    if(lang === "en"){
-        document.getElementById("planTitle").innerText = "📚 Lesson Plan";
-        document.getElementById("qTitle").innerText = "❓ Questions";
-    } else if(lang === "dr"){
-        document.getElementById("planTitle").innerText = "📚 پلان درسی";
-        document.getElementById("qTitle").innerText = "❓ سوالات";
+    if(file.type === "text/plain"){
+        let reader = new FileReader();
+        reader.onload = function(e){
+            fileText = e.target.result;
+        }
+        reader.readAsText(file);
     } else {
-        document.getElementById("planTitle").innerText = "📚 درسي پلان";
-        document.getElementById("qTitle").innerText = "❓ سوالونه";
+        fileText = "File loaded (only name available)";
     }
-}
+});
 
-function generatePlan() {
+function generateFromFile(){
     let subject = document.getElementById("subject").value;
     let topic = document.getElementById("topic").value;
 
-    let text = "";
+    let text = fileText.substring(0, 200); // sample
 
-    if(lang === "en"){
-        text = `
-        <b>Subject:</b> ${subject}<br>
-        <b>Topic:</b> ${topic}<br><br>
-        🎯 Objective: Understand ${topic}<br>
-        🧠 Activities: Explanation, Group Work<br>
-        📊 Assessment: Quiz + Homework
-        `;
-    }
-    else if(lang === "dr"){
-        text = `
-        <b>مضمون:</b> ${subject}<br>
-        <b>موضوع:</b> ${topic}<br><br>
-        🎯 هدف: درک ${topic}<br>
-        🧠 فعالیت: توضیح، کار گروهی<br>
-        📊 ارزیابی: امتحان + وظیفه
-        `;
-    }
-    else {
-        text = `
-        <b>مضمون:</b> ${subject}<br>
-        <b>موضوع:</b> ${topic}<br><br>
-        🎯 هدف: د ${topic} پوهه<br>
-        🧠 فعالیتونه: تشریح، ګروپي کار<br>
-        📊 ارزونه: امتحان + کورنی کار
-        `;
-    }
+    document.getElementById("output").innerHTML = `
+    <b>📚 مضمون:</b> ${subject}<br>
+    <b>📝 موضوع:</b> ${topic}<br><br>
 
-    document.getElementById("planOutput").innerHTML = text;
-}
+    <b>📖 پلان:</b><br>
+    🎯 هدف: د متن درک<br>
+    🧠 فعالیتونه: تشریح + تمرین<br>
+    📊 ارزونه: امتحان<br><br>
 
-function generateQuestions() {
-    let topic = document.getElementById("topic").value;
-
-    let text = "";
-
-    if(lang === "en"){
-        text = `
-        🟢 Easy: What is ${topic}?<br><br>
-        🟡 Medium: Explain ${topic}.<br><br>
-        🔴 Hard: Analyze ${topic}.
-        `;
-    }
-    else if(lang === "dr"){
-        text = `
-        🟢 آسان: ${topic} چیست؟<br><br>
-        🟡 متوسط: ${topic} را توضیح دهید<br><br>
-        🔴 سخت: ${topic} را تحلیل کنید
-        `;
-    }
-    else {
-        text = `
-        🟢 آسان: ${topic} څه شی دی؟<br><br>
-        🟡 متوسط: ${topic} تشریح کړه<br><br>
-        🔴 سخت: ${topic} تحلیل کړه
-        `;
-    }
-
-    document.getElementById("questionOutput").innerHTML = text;
+    <b>❓ سوالونه:</b><br>
+    🟢 آسان: ${text}?<br><br>
+    🟡 متوسط: دا متن تشریح کړه<br><br>
+    🔴 سخت: تحلیل یې کړه
+    `;
 }
 </script>
 
