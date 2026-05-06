@@ -1,134 +1,95 @@
-<!DOCTYPE html>
-<html lang="ps" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>استاد یار (AI Master) - عمران عمر</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <style>
-        :root { --p: #0f172a; --a: #2563eb; --s: #10b981; --bg: #f1f5f9; }
-        body { font-family: 'Tahoma', sans-serif; background: var(--bg); margin: 0; transition: 0.3s; }
-        header { background: var(--p); color: white; padding: 25px; text-align: center; border-bottom: 5px solid var(--a); }
-        .container { max-width: 900px; margin: 20px auto; padding: 10px; }
-        .card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 25px; }
-        .admin-box { background: #f8fafc; border-right: 5px solid var(--a); padding: 15px; border-radius: 8px; font-size: 14px; margin-bottom: 20px; line-height: 1.8; }
-        .upload-zone { border: 2px dashed #cbd5e1; padding: 40px; border-radius: 12px; text-align: center; cursor: pointer; background: #fafafa; transition: 0.3s; }
-        .upload-zone:hover { border-color: var(--a); background: #f0f7ff; }
-        .flex-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0; }
-        select, button { padding: 14px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 16px; font-family: inherit; }
-        .btn { border: none; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-plan { background: var(--a); }
-        .btn-exam { background: var(--s); }
-        .btn:disabled { background: #94a3b8; cursor: not-allowed; }
-        .output { margin-top: 25px; padding: 20px; border-radius: 12px; border: 2px solid #e2e8f0; background: white; display: none; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: right; }
-        th { background: #f8fafc; }
-        @media (max-width: 600px) { .flex-row { grid-template-columns: 1fr; } }
-    </style>
-</head>
-<body>
+import streamlit as st
+import pandas as pd
+from datetime import datetime
 
-<header><h1>استاد یار (Advanced Teacher AI)</h1></header>
+# د اپلیکیشن عمومي تنظیمات
+st.set_page_config(page_title="استاد یار - Ustad Yar", layout="wide")
 
-<div class="container">
-    <div class="card">
-        <div class="admin-box">
-            <strong>جوړوونکی:</strong> محمد عمران عمر <br>
-            <strong>پوهنتون:</strong> کابل پوهنتون (ارواپوهنه او تربیتی علوم) <br>
-            <strong>ځای:</strong> وردک، جغتو
-        </div>
-        <label>د ژبې انتخاب (Choose Language):</label>
-        <select id="lang" onchange="updateUI()">
-            <option value="ps">پښتو</option>
-            <option value="dr">دري</option>
-            <option value="en">English</option>
-        </select>
-    </div>
+# په اپلیکیشن کې ستاسو د معلوماتو اضافه کول (Settings)
+USER_INFO = {
+    "نام": "محمد عمران عمر",
+    "ولایت": "وردګ",
+    "ولسوالۍ": "جغتو",
+    "رول": "د اپلیکیشن بنسټ ایښودونکی"
+}
 
-    <div class="card">
-        <h3 id="step1">۱. فایل اپلوډ کړئ</h3>
-        <div class="upload-zone" onclick="document.getElementById('pdf').click()">
-            <div id="status">📁 PDF درسي فایل دلته کش کړئ یا کلیک وکړئ</div>
-            <input type="file" id="pdf" accept=".pdf" style="display:none;">
-        </div>
-    </div>
+# د ژبو انتخاب
+lang = st.sidebar.selectbox("ژبه انتخاب کړئ / انتخاب زبان / Select Language", ["پښتو", "دري", "English"])
 
-    <div class="card">
-        <h3 id="step2">۲. د عملیې ترسره کول</h3>
-        <div class="flex-row">
-            <select id="type">
-                <option value="d" id="opt1">ساعتوار پلان</option>
-                <option value="w" id="opt2">اونیز پلان</option>
-            </select>
-            <select id="diff">
-                <option value="h" id="opt3">سخت سوالونه</option>
-                <option value="m" id="opt4">متوسط سوالونه</option>
-            </select>
-        </div>
-        <div class="flex-row">
-            <button class="btn btn-plan" id="pBtn" disabled onclick="process('plan')">📅 پلان جوړ کړه</button>
-            <button class="btn btn-exam" id="eBtn" disabled onclick="process('exam')">📝 سوالونه جوړ کړه</button>
-        </div>
-    </div>
+# د متنونو ژباړه
+strings = {
+    "پښتو": {"title": "استاد یار", "upload": "فایل اپلوډ کړئ", "plan": "درسي پلان", "gen_q": "سوالونه جوړ کړئ", "settings": "تنظیمات"},
+    "دري": {"title": "استاد یار", "upload": "آپلود فایل", "plan": "پلان درسی", "gen_q": "ساخت سوالات", "settings": "تنظیمات"},
+    "English": {"title": "Ustad Yar", "upload": "Upload File", "plan": "Lesson Plan", "gen_q": "Generate Questions", "settings": "Settings"}
+}
 
-    <div id="outPlan" class="output card" style="border-top: 6px solid var(--a);"></div>
-    <div id="outExam" class="output card" style="border-top: 6px solid var(--s);"></div>
-</div>
+s = strings[lang]
 
-<script>
-    let text = "";
-    const pBtn = document.getElementById('pBtn');
-    const eBtn = document.getElementById('eBtn');
+# سائډبار (Sidebar)
+st.sidebar.title(s["title"])
+st.sidebar.image("https://cdn-icons-png.flaticon.com/512/3429/3429433.png", width=100)
+
+menu = st.sidebar.radio("مینو", [s["plan"], s["gen_q"], s["settings"]])
+
+# --- ۱. د تنظیماتو برخه ---
+if menu == s["settings"]:
+    st.header(f"⚙️ {s['settings']}")
+    st.write(f"**جوړونکی:** {USER_INFO['نام']}")
+    st.write(f"**ولایت:** {USER_INFO['ولایت']}")
+    st.write(f"**ولسوالۍ:** {USER_INFO['ولسوالۍ']}")
+    st.info("دا اپلیکیشن د استادانو لپاره د تدریس چارو اسانولو په موخه ډیزاین شوی.")
+
+# --- ۲. د پلان جوړونې برخه ---
+elif menu == s["plan"]:
+    st.header(f"📅 {s['plan']}")
     
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-
-    document.getElementById('pdf').onchange = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            document.getElementById('status').innerText = "⌛ تحلیل پیل شو...";
-            const reader = new FileReader();
-            reader.onload = async function() {
-                const typed = new Uint8Array(this.result);
-                const pdf = await pdfjsLib.getDocument(typed).promise;
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    const page = await pdf.getPage(i);
-                    const content = await page.getTextContent();
-                    text += content.items.map(s => s.str).join(" ");
-                }
-                document.getElementById('status').innerHTML = "✅ فایل ولوستل شو: " + file.name;
-                pBtn.disabled = false; eBtn.disabled = false;
-            };
-            reader.readAsArrayBuffer(file);
+    col1, col2 = st.columns(2)
+    with col1:
+        subject = st.text_input("مضمون")
+        grade = st.selectbox("ټولګی", ["۱۰", "۱۱", "۱۲", "پوهنتون"])
+    with col2:
+        plan_type = st.selectbox("د پلان ډول", ["کلنی", "میاشتنی", "اونیز", "ساعتوار"])
+    
+    if st.button("پلان جوړ کړه"):
+        st.success(f"د {subject} لپاره {plan_type} پلان په بریالیتوب سره جوړ شو.")
+        # دلته یو نمونه جدول ښیو
+        data = {
+            "اونۍ/ساعت": ["لومړی", "دوهم", "دریم"],
+            "موضوع": ["پېژندنه", "اصلي درس", "تکرار"],
+            "هدف": ["پوهېدل", "تحلیل", "ارزیابي"],
+            "رخصتي/امتحان": ["نسته", "نسته", "چهارنیم میاشتنی"]
         }
-    };
+        st.table(pd.DataFrame(data))
 
-    function updateUI() {
-        const l = document.getElementById('lang').value;
-        const dict = {
-            ps: { s1: "۱. فایل اپلوډ کړئ", s2: "۲. د عملیې ترسره کول", o1: "ساعتوار پلان", o2: "اونیز پلان", o3: "سخت سوالونه", o4: "متوسط سوالونه", bp: "📅 پلان جوړ کړه", be: "📝 سوالونه جوړ کړه" },
-            dr: { s1: "۱. فایل را آپلود کنید", s2: "۲. اجرای عملیه", o1: "طرح درس روزانه", o2: "طرح درس هفته وار", o3: "سوالات دشوار", o4: "سوالات متوسط", bp: "📅 طرح درس بساز", be: "📝 سوالات بساز" },
-            en: { s1: "1. Upload File", s2: "2. Execute Action", o1: "Daily Plan", o2: "Weekly Plan", o3: "Hard Questions", o4: "Medium Questions", bp: "📅 Make Plan", be: "📝 Make Questions" }
-        };
-        document.getElementById('step1').innerText = dict[l].s1;
-        document.getElementById('step2').innerText = dict[l].s2;
-        document.getElementById('opt1').innerText = dict[l].o1;
-        document.getElementById('opt2').innerText = dict[l].o2;
-        document.getElementById('opt3').innerText = dict[l].o3;
-        document.getElementById('opt4').innerText = dict[l].o4;
-        document.getElementById('pBtn').innerText = dict[l].bp;
-        document.getElementById('eBtn').innerText = dict[l].be;
-    }
-
-    function process(m) {
-        const l = document.getElementById('lang').value;
-        const op = document.getElementById('outPlan');
-        const oe = document.getElementById('outExam');
+# --- ۳. د فایل اپلوډ او سوالونو برخه ---
+elif menu == s["gen_q"]:
+    st.header(f"📝 {s['gen_q']}")
+    
+    uploaded_file = st.file_uploader(s["upload"], type=["pdf", "docx", "txt", "jpg", "png"])
+    
+    if uploaded_file is not None:
+        st.success("فایل په بریالیتوب سره اپلوډ شو. سیسټم د متن په تحلیل بوخت دی...")
         
-        const content = {
-            ps: { p: "درسي پلان", e: "سوالونه", h1: "مرحله", h2: "فعالیت", h3: "وخت", q1: "۱. تحلیلي پوښتنه: د موضوع اهمیت بیان کړئ؟", q2: "۲. څلور ځوابه سوال د متن په اړه." },
-            dr: { p: "طرح درس", e: "سوالات", h1: "مرحله", h2: "فعالیت", h3: "زمان", q1: "۱. سوال تحلیلی: اهمیت موضوع را بیان کنید؟", q2: "۲. سوال چهار گزینه ای در مورد متن." },
-            en: { p: "Lesson Plan", e: "Questions", h1: "Stage", h2: "Activity", h3: "Time", q1: "1. Analytical question: Explain the importance?", q2: "2. MCQ about the text." }
-        };
+        difficulty = st.select_slider("د سوالونو کچه انتخاب کړئ", options=["آسان", "متوسط", "سخت"])
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            if st.button("تشریحي سوالونه"):
+                st.subheader("تشریحي سوالونه")
+                st.write("۱. د پورته متن خلاصه ولیکئ؟")
+                st.write("۲. د موضوع اصلي هدف څه و؟")
+        
+        with col2:
+            if st.button("چهارځوابه (MCQ)"):
+                st.subheader("چهارځوابه سوالونه")
+                st.write("۱. د متن مطابق سم ځواب کوم دی؟")
+                st.write("الف) اختیار ۱  ب) اختیار ۲")
+        
+        with col3:
+            if st.button("خالي ځایونه"):
+                st.subheader("خالي ځایونه")
+                st.write("۱. په متن کې د .......... کلمه خورا مهمه ده.")
 
-        if(m === 'plan') {
+# د اپلیکیشن فوټر (Footer)
+st.sidebar.markdown("---")
+st.sidebar.write(f"© ٢٠٢٦ - {USER_INFO['نام']}")
