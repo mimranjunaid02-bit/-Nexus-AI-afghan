@@ -3,98 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academic Assistant Pro - عمران عمر</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>استاد یار - د درسي پلانونو او ازموینو سيسټم</title>
     <style>
-        :root { --primary: #1a237e; --secondary: #2e7d32; --accent: #c62828; --bg: #f4f6f9; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--bg); color: #333; }
-        .header { background: var(--primary); color: white; padding: 25px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .container { padding: 20px; max-width: 800px; margin: auto; }
-        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border-top: 5px solid var(--secondary); }
-        
-        /* د فایل اپلوډ برخه */
-        .file-upload { border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 10px; cursor: pointer; background: #fafafa; transition: 0.3s; margin: 15px 0; }
-        .file-upload:hover { border-color: var(--primary); background: #f0f7ff; }
-        
-        input, select, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; box-sizing: border-box; }
-        .main-btn { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        .main-btn:hover { background: #0d1a6e; }
-        #output { display: none; margin-top: 20px; background: #fff; padding: 20px; border-radius: 8px; border-right: 5px solid var(--secondary); white-space: pre-wrap; line-height: 1.7; }
-        .earning-box { background: #fffde7; padding: 10px; border-radius: 8px; border: 1px solid #ffd600; text-align: center; font-size: 13px; margin-bottom: 15px; }
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --bg-color: #f5f6fa;
+            --text-color: #2f3640;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+        .tab-button.active {
+            border-bottom: 3px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        button.action-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        button.action-btn:hover {
+            background-color: #2980b9;
+        }
+        .settings-card {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            border-right: 5px solid var(--accent-color);
+        }
+        .output-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f4f8;
+            border: 1px solid #bde0ec;
+            border-radius: 5px;
+            min-height: 100px;
+        }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h1 style="margin:0;">Academic Assistant</h1>
-    <small>Powered by Imran Omar | Jaghatu, Wardak</small>
-</div>
+    <header>
+        <h1>استاد یار (Teacher's Assistant AI)</h1>
+        <p>د درسي پلانونو او علمي موادو د مدیریت پرمختللی سيسټم</p>
+    </header>
 
-<div class="container">
-    <div class="earning-box">
-        <i class="fas fa-ad"></i> دلته به ستاسو اعلانات او عاید ښکاري
-    </div>
-
-    <div class="card">
-        <h3><i class="fas fa-plus-circle"></i> نوی اکاډمیک پلان</h3>
-        
-        <label>۱. د درسي موادو فایل (عکس یا PDF) انتخاب کړئ:</label>
-        <div class="file-upload" onclick="document.getElementById('fileInput').click()">
-            <i class="fas fa-cloud-upload-alt" style="font-size: 30px; color: var(--primary);"></i>
-            <p id="fileName">د کتاب یا نوټونو فایل دلته اپلوډ کړئ</p>
-            <input type="file" id="fileInput" hidden onchange="updateFileName()">
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab('planner')">درسي پلانونه</button>
+            <button class="tab-button" onclick="openTab('exam')">د ازموینې پوښتنې جوړول</button>
+            <button class="tab-button" onclick="openTab('settings')">تنظیمات (پېژندنه)</button>
         </div>
 
-        <label>۲. مضمون او کټګوري:</label>
-        <input type="text" id="subj" placeholder="مثلاً: اسلامي ثقافت - پوهنتون">
-        
-        <select id="pType">
-            <option value="Annual">کلنی پلان</option>
-            <option value="Monthly">میاشتنی پلان</option>
-            <option value="Lesson">ساعتوار پلان</option>
-        </select>
+        <div id="planner" class="tab-content active">
+            <h2>د درسي پلان اتومات جوړوونکی</h2>
+            <div class="form-group">
+                <label>مضمون یا موضوع ولیکئ:</label>
+                <input type="text" placeholder="مثلاً: بیولوژي، ارواپوهنه، یا انګلیسي ګرامر...">
+            </div>
+            <div class="form-group">
+                <label>د پلان ډول وټاکئ:</label>
+                <select>
+                    <option>ساعتوار پلان</option>
+                    <option>اونیز پلان</option>
+                    <option>میاشتنی پلان</option>
+                    <option>کلنی پلان</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>ژبه وټاکئ:</label>
+                <select>
+                    <option>پښتو</option>
+                    <option>دري</option>
+                    <option>English</option>
+                </select>
+            </div>
+            <button class="action-btn">پلان جوړ کړه (اهداف، ارزیابي او مهالوېش سره)</button>
+            
+            <div class="output-box" id="planOutput">
+                <em>ستاسو درسي پلان به دلته د AI لخوا په منظم ډول ښودل کیږي...</em>
+            </div>
+        </div>
 
-        <label>۳. اضافي غوښتنې:</label>
-        <textarea id="notes" rows="2" placeholder="د امتحان نېټه یا اهداف..."></textarea>
+        <div id="exam" class="tab-content">
+            <h2>د موادو څخه د پوښتنو جوړول</h2>
+            <p>خپل فایل (چپټر یا کتاب) اپلوډ کړئ ترڅو سیسټم ورڅخه تشریحي، څلور ځوابه، او خانه خالي پوښتنې جوړې کړي.</p>
+            
+            <div class="form-group">
+                <label>درسي فایل اپلوډ کړئ (PDF, DOCX):</label>
+                <input type="file" id="fileUpload">
+            </div>
+            
+            <div class="form-group">
+                <label>د پوښتنو ډول او سویه:</label>
+                <select multiple style="height: 100px;">
+                    <option selected>سختې تشریحي پوښتنې</option>
+                    <option selected>متوسطې تشریحي پوښتنې</option>
+                    <option selected>اسانه تشریحي پوښتنې</option>
+                    <option selected>څلور ځوابه (MCQs)</option>
+                    <option selected>خانه خالي (Fill in the blanks)</option>
+                </select>
+            </div>
+            <button class="action-btn">پوښتنې استخراج او جوړې کړه</button>
+            
+            <div class="output-box" id="examOutput">
+                <em>ستاسو د ازموینې معیاري پاڼه به دلته ښودل کیږي...</em>
+            </div>
+        </div>
 
-        <button class="main-btn" onclick="startGeneration()">پلان جوړ کړه</button>
+        <div id="settings" class="tab-content">
+            <h2>د سیسټم تنظیمات او پیژندنه</h2>
+            <div class="settings-card">
+                <h3>د جوړوونکي (Developer) معلومات</h3>
+                <p><strong>نوم:</strong> محمد عمران عمر</p>
+                <p><strong>استوګنځی:</strong> ولایت وردک، ولسوالی جغتو</p>
+                <p><strong>رول:</strong> اډمین / د سیسټم طراح</p>
+            </div>
+            <br>
+            <div class="form-group">
+                <label>د سیسټم اصلي ژبه بدله کړئ:</label>
+                <select>
+                    <option selected>پښتو</option>
+                    <option>دري</option>
+                    <option>English</option>
+                </select>
+            </div>
+            <button class="action-btn" style="background-color: #27ae60;">تنظیمات خوندي کړئ</button>
+        </div>
+
     </div>
 
-    <div id="output"></div>
-</div>
-
-<script>
-    function updateFileName() {
-        const file = document.getElementById('fileInput').files[0];
-        document.getElementById('fileName').innerText = file ? file.name : "فایل انتخاب شو";
-    }
-
-    async function startGeneration() {
-        // دلته ستا کیلي پټه ده (دا باید وروسته په Server کې خوندي کړو)
-        // فعلاً د امتحان لپاره یو ځل خپله کیلي دلته پیسټ کړه
-        const apiKey = "ستا_API_Key_دلته"; 
-        
-        const output = document.getElementById('output');
-        output.style.display = 'block';
-        output.innerHTML = "<i class='fas fa-spinner fa-spin'></i> ستاسو فایل تحلیل کیږي او پلان جوړیږي...";
-
-        // دا برخه د فایل لوستلو لپاره ده (Simulated)
-        setTimeout(() => {
-            const result = `
-د درسي پلان جزئیات:
-مضمون: ${document.getElementById('subj').value}
-ترتیب کوونکی: محمد عمران عمر (جغتو، وردګ)
-
-۱. تعلیمي اهداف: د فایل په اساس د محصلینو پوهه لوړول.
-۲. د تدریس میتود: لکچر او عملي کار.
-۳. ارزیابي: میاشتنۍ ازموینه.
-
-(دا یو نمونه ځواب دی، کله چې کیلي وصل شي، پوره پلان به راشي)`;
-            output.innerText = result;
-        }, 3000);
-    }
-</script>
-
+    <script>
+        function openTab(tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            event.currentTarget.classList.add("active");
+        }
+    </script>
 </body>
 </html>
