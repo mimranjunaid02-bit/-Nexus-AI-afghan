@@ -4,167 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>استاد یار - محمد عمران عمر</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
-        :root {
-            --primary: #1a5f7a;
-            --accent: #e67e22;
-            --light: #f8f9fa;
-        }
-        body {
-            font-family: 'Tahoma', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f2f5;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        header {
-            background: var(--primary);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        .main-container {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 15px;
-            gap: 20px;
-        }
-        /* Sidebar/Info Card */
-        .sidebar {
-            flex: 1;
-            min-width: 280px;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            height: fit-content;
-        }
-        /* Content Area */
-        .content {
-            flex: 3;
-            min-width: 300px;
-        }
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .info-header {
-            background: #e1eef3;
-            padding: 15px;
-            border-radius: 8px;
-            border-right: 5px solid var(--primary);
-            margin-bottom: 20px;
-        }
-        .upload-box {
-            border: 2px dashed var(--primary);
-            padding: 30px;
-            text-align: center;
-            border-radius: 10px;
-            background: #fafafa;
-            margin: 20px 0;
-            cursor: pointer;
-        }
-        .btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            width: 100%;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        select {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        .result-area {
-            margin-top: 20px;
-            padding: 15px;
-            background: #fffbe6;
-            border: 1px solid #ffe58f;
-            border-radius: 8px;
-            display: none;
-        }
-        @media (max-width: 768px) {
-            .main-container { flex-direction: column; }
-            .sidebar { order: 2; }
-            .content { order: 1; }
-        }
+        :root { --primary: #1a5f7a; --accent: #e67e22; --bg: #f0f2f5; }
+        body { font-family: 'Tahoma', sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        header { background: var(--primary); color: white; padding: 15px; text-align: center; }
+        .main-container { display: flex; flex-wrap: wrap; padding: 20px; gap: 20px; max-width: 1200px; margin: auto; }
+        .sidebar, .content { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .sidebar { flex: 1; min-width: 280px; height: fit-content; }
+        .content { flex: 3; min-width: 320px; }
+        .upload-box { border: 2px dashed var(--primary); padding: 40px; text-align: center; border-radius: 10px; background: #fafafa; cursor: pointer; margin-bottom: 20px; }
+        .btn { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .info-box { background: #e1eef3; padding: 15px; border-radius: 8px; border-right: 5px solid var(--primary); margin-bottom: 15px; font-size: 14px; line-height: 1.8; }
+        .status { margin-top: 10px; font-weight: bold; color: var(--primary); }
+        #resultArea { margin-top: 20px; padding: 15px; background: #fffbe6; border: 1px solid #ffe58f; border-radius: 8px; display: none; line-height: 1.6; }
+        @media (max-width: 768px) { .main-container { flex-direction: column; } }
     </style>
 </head>
 <body>
 
-<header>
-    <h2 style="margin:0;">استاد یار AI</h2>
-</header>
+<header><h2>استاد یار AI (درسي همکار)</h2></header>
 
 <div class="main-container">
     <div class="sidebar">
-        <h3 style="color: var(--primary); border-bottom: 2px solid #eee; padding-bottom: 5px;">جوړوونکی</h3>
-        <div class="info-header">
+        <h3>جوړوونکی</h3>
+        <div class="info-box">
             <strong>محمد عمران عمر</strong><br>
             د کابل پوهنتون محصل<br>
             ارواپوهنه او تربيتي علوم<br>
             وردک، جغتو
         </div>
-        <button class="btn" style="background: var(--primary);" onclick="alert('تنظیمات خوندي شول!')">د سیسټم تنظیمات</button>
+        <p style="font-size: 12px; color: #666;">دا سیسټم د استادانو سره د درسي پلانونو او ازموینو په جوړولو کې مرسته کوي.</p>
     </div>
 
     <div class="content">
-        <div class="card">
-            <h3 style="margin-top:0;">درسي پلان او سوالونه جوړونکی</h3>
-            <p style="font-size: 14px; color: #666;">خپل PDF فایل اپلوډ کړئ ترڅو اهداف، میتود او پوښتنې په اتومات ډول جوړ شي.</p>
-            
-            <div class="upload-box" onclick="document.getElementById('fileInp').click()">
-                <p>دلته کلیک وکړئ او فایل انتخاب کړئ</p>
-                <input type="file" id="fileInp" style="display:none;">
-            </div>
+        <h3>د PDF څخه د درس او پوښتنو جوړول</h3>
+        <div class="upload-box" id="dropZone" onclick="document.getElementById('pdfInput').click()">
+            <p id="uploadText">دلته کلیک وکړئ او درسي PDF انتخاب کړئ</p>
+            <input type="file" id="pdfInput" accept=".pdf" style="display:none;">
+        </div>
+        
+        <div id="status" class="status"></div>
 
-            <label>د پلان وخت:</label>
-            <select id="planType">
-                <option>ساعتوار پلان</option>
-                <option>اونیز پلان</option>
-                <option>میاشتنی پلان</option>
-                <option>کلنی پلان</option>
-            </select>
+        <label>د پلان ډول:</label>
+        <select id="planType" style="width:100%; padding:10px; margin:10px 0; border-radius:5px;">
+            <option>ساعتوار پلان</option>
+            <option>اونیز پلان</option>
+            <option>میاشتنی پلان</option>
+            <option>کلنی پلان</option>
+        </select>
 
-            <label>ژبه:</label>
-            <select>
-                <option>پښتو</option>
-                <option>دري</option>
-                <option>English</option>
-            </select>
+        <button class="btn" id="processBtn" disabled onclick="analyzePDF()">تحلیل او جوړول</button>
 
-            <button class="btn" onclick="processAI()">جوړ کړه</button>
-
-            <div id="result" class="result-area">
-                <h4 style="margin-top:0; color:#856404;">د AI پایله:</h4>
-                <div id="aiText"></div>
-            </div>
+        <div id="resultArea">
+            <h4 style="color: var(--primary); margin-top:0;">ستاسو درسي پلان او پوښتنې:</h4>
+            <div id="aiOutput"></div>
         </div>
     </div>
 </div>
 
 <script>
-    function processAI() {
-        const result = document.getElementById('result');
-        const aiText = document.getElementById('aiText');
-        result.style.display = 'block';
-        aiText.innerHTML = `
-            <p><strong>۱. اهداف:</strong> د فایل پر بنسټ تحلیلي او رفتاري اهداف جوړ شول.</p>
-            <p><strong>۲. تدریسي میتود:</strong> د فعال تدریس او پوښتنې ځواب میتود وړاندیز کیږي.</p>
-            <p><strong>۳. پوښتنې:</strong> تشریحي، څلور ځوابه او خانه خالي سوالونه چمتو شول.</p>
-            <p style="color:green;"><b>بشپړ شو!</b></p>
+    let extractedText = "";
+    const pdfInput = document.getElementById('pdfInput');
+    const status = document.getElementById('status');
+    const processBtn = document.getElementById('processBtn');
+    const uploadText = document.getElementById('uploadText');
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+    pdfInput.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (file && file.type === "application/pdf") {
+            status.innerText = "د فایل لوستل پیل شول...";
+            uploadText.innerText = "فایل انتخاب شو: " + file.name;
+            
+            const reader = new FileReader();
+            reader.onload = async function() {
+                const typedarray = new Uint8Array(this.result);
+                const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                let text = "";
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const content = await page.getTextContent();
+                    text += content.items.map(item => item.str).join(" ");
+                }
+                extractedText = text;
+                status.innerText = "فایل په بریالیتوب سره ولوستل شو! اوس 'جوړول' کلیک کړئ.";
+                processBtn.disabled = false;
+            };
+            reader.readAsArrayBuffer(file);
+        } else {
+            alert("مهرباني وکړئ یوازې PDF فایل اپلوډ کړئ.");
+        }
+    };
+
+    function analyzePDF() {
+        const output = document.getElementById('aiOutput');
+        const area = document.getElementById('resultArea');
+        area.style.display = 'block';
+        
+        // دلته موږ د لوستل شوي متن پر بنسټ فرضي پایله ښیو
+        // په حقیقي حالت کې دا متن یوې AI ته لیږل کیږي
+        output.innerHTML = `
+            <p><strong>۱. درسي اهداف:</strong> د متن پر بنسټ، محصلین به وکولی شي چې د موضوع اساسي مفاهیم درک او تشریح کړي.</p>
+            <p><strong>۲. تدریسي میتود:</strong> د دې محتوا لپاره <b>فعال تدریس (Active Learning)</b> او ګروپي بحث غوره میتودونه دي.</p>
+            <p><strong>۳. پوښتنې:</strong> <br>
+               - تشریحي: د موضوع اهمیت بیان کړئ؟ (سخت)<br>
+               - څلور ځوابه: د متن اصلي هدف کوم یو دی؟ (متوسط)<br>
+               - خانه خالي: د موضوع لومړنی پړاو په ____ کال کې پیل شو. (اسانه)</p>
+            <p><strong>۴. تقویم:</strong> د ازموینې نېټه او رخصتۍ په پلان کې شاملې شوې.</p>
         `;
     }
 </script>
