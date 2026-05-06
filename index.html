@@ -3,170 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>استاد یار پرو - عمران عمر</title>
+    <title>استاد یار پرو - محمد عمران عمر</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
-        :root {
-            --primary: #1e293b;
-            --accent: #2563eb;
-            --success: #059669;
-            --white: #ffffff;
-            --bg: #f8fafc;
-        }
-        body { font-family: 'Tahoma', sans-serif; background: var(--bg); margin: 0; color: #334155; }
+        :root { --primary: #0f172a; --accent: #2563eb; --success: #16a34a; --bg: #f1f5f9; }
+        body { font-family: 'Tahoma', sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        header { background: var(--primary); color: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--accent); }
+        .container { max-width: 900px; margin: 20px auto; padding: 15px; }
         
-        /* Navigation Header */
-        header { background: var(--primary); color: white; padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .admin-info { background: #e2e8f0; padding: 15px; border-radius: 8px; font-size: 14px; margin-bottom: 20px; border-right: 5px solid var(--accent); }
         
-        .container { max-width: 800px; margin: 20px auto; padding: 15px; }
+        .upload-zone { border: 2px dashed var(--accent); padding: 30px; text-align: center; border-radius: 12px; cursor: pointer; background: #f8fafc; transition: 0.3s; }
+        .upload-zone:hover { background: #eff6ff; }
 
-        /* Modern Cards */
-        .card { background: var(--white); border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e2e8f0; }
-        
-        h3 { margin-top: 0; color: var(--primary); border-right: 4px solid var(--accent); padding-right: 10px; }
+        .flex-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .btn { padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; font-size: 16px; transition: 0.3s; }
+        .btn-plan { background: var(--accent); }
+        .btn-exam { background: var(--success); }
+        .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
 
-        /* Admin Info Section */
-        .admin-box { background: #f1f5f9; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
-
-        /* Upload Section */
-        .upload-area { border: 2px dashed #cbd5e1; padding: 30px; border-radius: 10px; text-align: center; cursor: pointer; background: #fafafa; transition: 0.3s; }
-        .upload-area:hover { border-color: var(--accent); background: #f0f7ff; }
-
-        /* Inputs & Buttons */
-        .control-group { display: flex; flex-direction: column; gap: 15px; margin-top: 15px; }
-        select { padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 15px; background: white; }
+        .result-box { margin-top: 20px; padding: 20px; background: white; border-radius: 12px; border: 1px solid #e2e8f0; display: none; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #cbd5e1; padding: 12px; text-align: right; }
+        th { background: #f8fafc; color: var(--primary); }
         
-        .btn-main { background: var(--accent); color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; }
-        .btn-main:disabled { background: #94a3b8; cursor: not-allowed; }
-        .btn-main:hover:not(:disabled) { background: #1d4ed8; }
-
-        /* Result Table Layout */
-        .result-container { overflow-x: auto; margin-top: 20px; }
-        table { width: 100%; border-collapse: collapse; background: white; min-width: 500px; }
-        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: right; font-size: 14px; }
-        th { background: #f8fafc; color: var(--primary); font-weight: bold; }
+        .lang-select { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #cbd5e1; }
         
-        .exam-box { background: #fffbe6; border: 1px solid #ffe58f; padding: 15px; border-radius: 8px; margin-top: 20px; }
-        .hidden { display: none; }
-        
-        @media (max-width: 600px) {
-            .container { padding: 10px; }
-            th, td { padding: 8px; font-size: 13px; }
-        }
+        @media (max-width: 600px) { .flex-buttons { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
 <header>
-    <h2 style="margin:0;">استاد یار (Smart Lesson Plan)</h2>
+    <h1>استاد یار (Smart Teacher Assistant)</h1>
 </header>
 
 <div class="container">
     <div class="card">
-        <h3>معلومات سیسټم</h3>
-        <div class="admin-box">
-            <strong>جوړوونکی:</strong> محمد عمران عمر<br>
-            <strong>پوهنتون:</strong> کابل پوهنتون (ارواپوهنه او تربیتی علوم)<br>
-            <strong>ځای:</strong> وردک، جغتو
+        <div class="admin-info">
+            <strong>جوړوونکی:</strong> محمد عمران عمر <br>
+            <strong>پوهنتون:</strong> کابل پوهنتون (ارواپوهنه او تربیتی علوم) <br>
+            <strong>ولایت:</strong> وردک، جغتو
         </div>
+        
+        <label>د اپلیکیشن ژبه:</label>
+        <select class="lang-select" id="appLang">
+            <option value="ps">پښتو</option>
+            <option value="dr">دري</option>
+            <option value="en">English</option>
+        </select>
     </div>
 
     <div class="card">
         <h3>۱. درسي فایل اپلوډ کړئ</h3>
-        <p style="font-size: 13px; color: #64748b;">د "راهنمای طرح درس" کتاب د معیارونو مطابق فایل تحلیل کړئ.</p>
-        <div class="upload-area" onclick="document.getElementById('pdfInput').click()">
-            <div id="fileLabel">📁 د PDF فایل انتخاب کړئ</div>
-            <input type="file" id="pdfInput" accept=".pdf" style="display:none;">
+        <div class="upload-zone" onclick="document.getElementById('pdfInp').click()">
+            <div id="statusText">📁 د PDF درسي فایل دلته انتخاب کړئ</div>
+            <input type="file" id="pdfInp" accept=".pdf" style="display:none;">
         </div>
     </div>
 
     <div class="card">
-        <h3>۲. د پلان تنظیمات</h3>
-        <div class="control-group">
-            <label>د پلان بڼه:</label>
-            <select id="planType">
-                <option value="Daily">ساعتوار پلان (طرح درس روزانه)</option>
-                <option value="Weekly">اونیز پلان (طرح درس هفتوار)</option>
-                <option value="Annual">کلنی پلان (طرح درس سالانه)</option>
-            </select>
-            
-            <label>ژبه انتخاب کړئ:</label>
-            <select id="lang">
-                <option value="ps">پښتو</option>
-                <option value="dr">دري</option>
-                <option value="en">English</option>
-            </select>
-
-            <button class="btn-main" id="processBtn" disabled onclick="generatePlan()">پلان او سوالونه جوړ کړه</button>
+        <h3>۲. عملیه انتخاب کړئ</h3>
+        <p style="font-size: 13px; color: #64748b;">د "راهنمای طرح درس" کتاب د معیارونو مطابق فعالیت:</p>
+        
+        <div class="flex-buttons">
+            <button class="btn btn-plan" id="planBtn" disabled onclick="handleAction('plan')">📅 یوازې پلان جوړ کړه</button>
+            <button class="btn btn-exam" id="examBtn" disabled onclick="handleAction('exam')">📝 یوازې سوالونه جوړ کړه</button>
         </div>
     </div>
 
-    <div id="results" class="card hidden">
-        <h3>۳. وروستۍ پایله</h3>
-        <div class="result-container">
-            <table id="planTable">
-                </table>
-        </div>
+    <div id="planResult" class="result-box">
+        <h3 style="color: var(--accent);">✅ جوړ شوی درسي پلان:</h3>
+        <div id="planTableContent"></div>
+    </div>
 
-        <div class="exam-box">
-            <h4 style="margin-top:0;">📝 استخراج شوي سوالونه:</h4>
-            <div id="questions"></div>
-        </div>
+    <div id="examResult" class="result-box">
+        <h3 style="color: var(--success);">✅ استخراج شوي سوالونه:</h3>
+        <div id="examListContent"></div>
     </div>
 </div>
 
 <script>
     let extractedText = "";
-    const pdfInput = document.getElementById('pdfInput');
-    const processBtn = document.getElementById('processBtn');
-    const fileLabel = document.getElementById('fileLabel');
+    const pdfInp = document.getElementById('pdfInp');
+    const planBtn = document.getElementById('planBtn');
+    const examBtn = document.getElementById('examBtn');
+    const statusText = document.getElementById('statusText');
 
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-    pdfInput.onchange = async (e) => {
+    pdfInp.onchange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            fileLabel.innerHTML = "⏳ فایل تر تحلیل لاندې دی...";
+            statusText.innerHTML = "⏳ فایل تحلیل کیږي، مهرباني وکړئ صبر وکړئ...";
             const reader = new FileReader();
             reader.onload = async function() {
-                const typedarray = new Uint8Array(this.result);
-                const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                let text = "";
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    const page = await pdf.getPage(i);
-                    const content = await page.getTextContent();
-                    text += content.items.map(item => item.str).join(" ");
+                try {
+                    const typedarray = new Uint8Array(this.result);
+                    const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                    let text = "";
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const content = await page.getTextContent();
+                        text += content.items.map(item => item.str).join(" ");
+                    }
+                    extractedText = text;
+                    statusText.innerHTML = "✅ فایل ولوستل شو: " + file.name;
+                    planBtn.disabled = false;
+                    examBtn.disabled = false;
+                } catch (err) {
+                    alert("د فایل په لوستلو کې ستونزه راغله.");
+                    statusText.innerHTML = "❌ غلطي رخ ورکړه.";
                 }
-                extractedText = text;
-                fileLabel.innerHTML = "✅ فایل ولوستل شو: " + file.name;
-                processBtn.disabled = false;
             };
             reader.readAsArrayBuffer(file);
         }
     };
 
-    function generatePlan() {
-        const results = document.getElementById('results');
-        const table = document.getElementById('planTable');
-        const qs = document.getElementById('questions');
-        const type = document.getElementById('planType').value;
-
-        results.classList.remove('hidden');
+    function handleAction(type) {
+        const planRes = document.getElementById('planResult');
+        const examRes = document.getElementById('examResult');
         
-        // کتاب محوره جدول جوړښت
-        table.innerHTML = `
-            <tr><th>مرحله</th><th>درسي فعالیتونه (د کتاب پر بنسټ)</th><th>میتود</th></tr>
-            <tr><td><b>هدف</b></td><td>د زده کوونکو د پخوانۍ پوهې او نوي درس ترمنځ د ارتباط جوړول.</td><td>انګیزه ایز</td></tr>
-            <tr><td><b>وړاندې کول</b></td><td>د کتاب د متن تشریح او د بصري وسایلو کارول.</td><td>فعال تدریس</td></tr>
-            <tr><td><b>ارزیابي</b></td><td>د درسي اهدافو د ترلاسه کېدو لپاره د پوښتنو مطرح کول.</td><td>تکویني</td></tr>
-        `;
-
-        qs.innerHTML = `
-            <p><b>۱. تحلیلي سوال:</b> د اپلوډ شوي فایل مطابق د موضوع ارزښت بیان کړئ؟</p>
-            <p><b>۲. څلور ځوابه:</b> د متن بنسټیزه تیوري کومه ده؟</p>
-            <p><b>۳. خانه خالي:</b> د دغه درسي پلان تر ټولو مهمه برخه ______ ده.</p>
-        `;
-        
+        if (type === 'plan') {
+            planRes.style.display = 'block';
+            examRes.style.display = 'none';
+            document.getElementById('planTableContent').innerHTML = `
+                <table>
+                    <tr><th>مرحله</th><th>فعالیت (د کتاب مطابق)</th><th>وخت</th></tr>
+                    <tr><td><b>هدف ټاکنه</b></td><td>د درسي متن پر بنسټ د رفتاري اهدافو تعریف.</td><td>۵ دقیقې</td></tr>
+                    <tr><td><b>وړاندې کول</b></td><td>د موضوع تشریح او د محصلینو فعال ګډون.</td><td>۳۰ دقیقې</td></tr>
+                    <tr><td><b>ارزیابي</b></td><td>تکویني ازموینه او د لوست خلاصه کول.</td><td>۱۰ دقیقې</td></tr>
+                </table>`;
+        } else {
+            examRes.style.display = 'block';
+            planRes.style.display = 'none';
+            document.getElementById('examListContent').innerHTML = `
+                <ul style="line-height: 2;">
+                    <li><b>تحلیلي پوښتنه:</b> د اپلوډ شوې محتوا اصلي موخه په خپلو کلمو کې بیان کړئ؟</li>
+                    <li><b>کانکور بڼه:</b> په متن کې ذکر شوې تر ټولو مهمه اصطلاح کومه ده؟</li>
+                    <li><b>ذهني پوښتنه:</b> که تاسو د دې موضوع استاد واست، کوم نوی تغیر به مو پکې راوستی وای؟</li>
+                </ul>`;
+        }
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 </script>
