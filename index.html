@@ -7,13 +7,13 @@
 
 <style>
 body {
-    font-family: Arial;
     margin: 0;
-    background: #f4f6f9;
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
 }
 
 header {
-    background: #2b7cff;
+    background: #1e88e5;
     color: white;
     padding: 15px;
     text-align: center;
@@ -22,14 +22,20 @@ header {
 
 .container {
     padding: 15px;
+    max-width: 600px;
+    margin: auto;
 }
 
 .card {
     background: white;
     padding: 15px;
-    border-radius: 10px;
     margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+h3 {
+    margin-top: 0;
 }
 
 input, select, button {
@@ -41,21 +47,28 @@ input, select, button {
 }
 
 button {
-    background: #2b7cff;
+    background: #1e88e5;
     color: white;
     border: none;
     cursor: pointer;
 }
 
 button:hover {
-    background: #1a5edb;
+    background: #1565c0;
 }
 
 .output {
-    background: #eef3ff;
+    background: #eef4ff;
     padding: 10px;
     margin-top: 10px;
     border-radius: 8px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    font-size: 12px;
+    color: gray;
 }
 </style>
 </head>
@@ -67,67 +80,126 @@ button:hover {
 <div class="container">
 
 <div class="card">
-<h3>👤 User Info</h3>
+<h3>👤 معلومات</h3>
 <p>محمد عمران عمر | وردک - جغتو</p>
 </div>
 
 <div class="card">
-<h3>🌐 Language</h3>
-<select id="lang">
-<option>Pashto</option>
-<option>Dari</option>
-<option>English</option>
+<h3>🌐 ژبه</h3>
+<select id="lang" onchange="changeLang()">
+<option value="ps">پښتو</option>
+<option value="dr">دری</option>
+<option value="en">English</option>
 </select>
 </div>
 
 <div class="card">
-<h3>📚 Lesson Plan</h3>
-<input type="text" id="subject" placeholder="Subject">
-<input type="text" id="topic" placeholder="Topic">
-<button onclick="generatePlan()">Generate Plan</button>
+<h3 id="planTitle">📚 درسي پلان</h3>
+<input type="text" id="subject" placeholder="مضمون">
+<input type="text" id="topic" placeholder="موضوع">
+<button onclick="generatePlan()">پلان جوړ کړه</button>
 
 <div id="planOutput" class="output"></div>
 </div>
 
 <div class="card">
-<h3>📂 Upload File</h3>
-<input type="file" id="file">
-</div>
-
-<div class="card">
-<h3>❓ Question Generator</h3>
-<button onclick="generateQuestions()">Generate Questions</button>
+<h3 id="qTitle">❓ سوالونه</h3>
+<button onclick="generateQuestions()">سوالونه جوړ کړه</button>
 
 <div id="questionOutput" class="output"></div>
 </div>
 
 </div>
 
+<footer>
+© 2026 - استاد یار
+</footer>
+
 <script>
+let lang = "ps";
+
+function changeLang() {
+    lang = document.getElementById("lang").value;
+
+    if(lang === "en"){
+        document.getElementById("planTitle").innerText = "📚 Lesson Plan";
+        document.getElementById("qTitle").innerText = "❓ Questions";
+    } else if(lang === "dr"){
+        document.getElementById("planTitle").innerText = "📚 پلان درسی";
+        document.getElementById("qTitle").innerText = "❓ سوالات";
+    } else {
+        document.getElementById("planTitle").innerText = "📚 درسي پلان";
+        document.getElementById("qTitle").innerText = "❓ سوالونه";
+    }
+}
+
 function generatePlan() {
     let subject = document.getElementById("subject").value;
     let topic = document.getElementById("topic").value;
 
-    document.getElementById("planOutput").innerHTML = `
-    <b>Subject:</b> ${subject} <br>
-    <b>Topic:</b> ${topic} <br><br>
+    let text = "";
 
-    🎯 Objective: Understand ${topic} <br>
-    🧠 Activities: Explanation, Practice, Group Work <br>
-    📊 Assessment: Quiz + Homework
-    `;
+    if(lang === "en"){
+        text = `
+        <b>Subject:</b> ${subject}<br>
+        <b>Topic:</b> ${topic}<br><br>
+        🎯 Objective: Understand ${topic}<br>
+        🧠 Activities: Explanation, Group Work<br>
+        📊 Assessment: Quiz + Homework
+        `;
+    }
+    else if(lang === "dr"){
+        text = `
+        <b>مضمون:</b> ${subject}<br>
+        <b>موضوع:</b> ${topic}<br><br>
+        🎯 هدف: درک ${topic}<br>
+        🧠 فعالیت: توضیح، کار گروهی<br>
+        📊 ارزیابی: امتحان + وظیفه
+        `;
+    }
+    else {
+        text = `
+        <b>مضمون:</b> ${subject}<br>
+        <b>موضوع:</b> ${topic}<br><br>
+        🎯 هدف: د ${topic} پوهه<br>
+        🧠 فعالیتونه: تشریح، ګروپي کار<br>
+        📊 ارزونه: امتحان + کورنی کار
+        `;
+    }
+
+    document.getElementById("planOutput").innerHTML = text;
 }
 
 function generateQuestions() {
     let topic = document.getElementById("topic").value;
 
-    document.getElementById("questionOutput").innerHTML = `
-    🟢 Easy: What is ${topic}? <br><br>
-    🟡 Medium: Explain ${topic} with example. <br><br>
-    🔴 Hard: Analyze ${topic} in detail.
-    `;
+    let text = "";
+
+    if(lang === "en"){
+        text = `
+        🟢 Easy: What is ${topic}?<br><br>
+        🟡 Medium: Explain ${topic}.<br><br>
+        🔴 Hard: Analyze ${topic}.
+        `;
+    }
+    else if(lang === "dr"){
+        text = `
+        🟢 آسان: ${topic} چیست؟<br><br>
+        🟡 متوسط: ${topic} را توضیح دهید<br><br>
+        🔴 سخت: ${topic} را تحلیل کنید
+        `;
+    }
+    else {
+        text = `
+        🟢 آسان: ${topic} څه شی دی؟<br><br>
+        🟡 متوسط: ${topic} تشریح کړه<br><br>
+        🔴 سخت: ${topic} تحلیل کړه
+        `;
+    }
+
+    document.getElementById("questionOutput").innerHTML = text;
 }
 </script>
 
 </body>
-    </html>
+</html>
