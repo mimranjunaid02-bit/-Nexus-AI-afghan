@@ -2,94 +2,103 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
-# د اپلیکیشن عمومي تنظیمات
-st.set_page_config(page_title="استاد یار - Ustad Yar", layout="wide")
+# -------------------------
+# App Config
+# -------------------------
+st.set_page_config(page_title="استاد یار | Ustad Yar", layout="wide")
 
-# په اپلیکیشن کې ستاسو د معلوماتو اضافه کول (Settings)
+# -------------------------
+# User Info (Settings)
+# -------------------------
 USER_INFO = {
-    "نام": "محمد عمران عمر",
-    "ولایت": "وردګ",
-    "ولسوالۍ": "جغتو",
-    "رول": "د اپلیکیشن بنسټ ایښودونکی"
+    "name": "محمد عمران عمر",
+    "province": "وردک",
+    "district": "جغتو"
 }
 
-# د ژبو انتخاب
-lang = st.sidebar.selectbox("ژبه انتخاب کړئ / انتخاب زبان / Select Language", ["پښتو", "دري", "English"])
+# -------------------------
+# Language System
+# -------------------------
+lang = st.sidebar.selectbox("🌐 Language / ژبه", ["پښتو", "دری", "English"])
 
-# د متنونو ژباړه
 strings = {
-    "پښتو": {"title": "استاد یار", "upload": "فایل اپلوډ کړئ", "plan": "درسي پلان", "gen_q": "سوالونه جوړ کړئ", "settings": "تنظیمات"},
-    "دري": {"title": "استاد یار", "upload": "آپلود فایل", "plan": "پلان درسی", "gen_q": "ساخت سوالات", "settings": "تنظیمات"},
-    "English": {"title": "Ustad Yar", "upload": "Upload File", "plan": "Lesson Plan", "gen_q": "Generate Questions", "settings": "Settings"}
+    "پښتو": {
+        "title": "استاد یار",
+        "subject": "مضمون",
+        "topic": "موضوع",
+        "generate": "پلان جوړ کړه",
+        "plan": "درسي پلان",
+        "questions": "سوالونه جوړ کړه"
+    },
+    "دری": {
+        "title": "استاد یار",
+        "subject": "مضمون",
+        "topic": "موضوع",
+        "generate": "ایجاد پلان",
+        "plan": "پلان درسی",
+        "questions": "ساخت سوال"
+    },
+    "English": {
+        "title": "Ustad Yar",
+        "subject": "Subject",
+        "topic": "Topic",
+        "generate": "Generate Plan",
+        "plan": "Lesson Plan",
+        "questions": "Generate Questions"
+    }
 }
 
-s = strings[lang]
+t = strings[lang]
 
-# سائډبار (Sidebar)
-st.sidebar.title(s["title"])
-st.sidebar.image("https://cdn-icons-png.flaticon.com/512/3429/3429433.png", width=100)
+# -------------------------
+# Title
+# -------------------------
+st.title(f"📘 {t['title']}")
 
-menu = st.sidebar.radio("مینو", [s["plan"], s["gen_q"], s["settings"]])
+st.write(f"👤 {USER_INFO['name']} | {USER_INFO['province']} - {USER_INFO['district']}")
 
-# --- ۱. د تنظیماتو برخه ---
-if menu == s["settings"]:
-    st.header(f"⚙️ {s['settings']}")
-    st.write(f"**جوړونکی:** {USER_INFO['نام']}")
-    st.write(f"**ولایت:** {USER_INFO['ولایت']}")
-    st.write(f"**ولسوالۍ:** {USER_INFO['ولسوالۍ']}")
-    st.info("دا اپلیکیشن د استادانو لپاره د تدریس چارو اسانولو په موخه ډیزاین شوی.")
+# -------------------------
+# Inputs
+# -------------------------
+subject = st.text_input(f"📚 {t['subject']}")
+topic = st.text_input(f"📝 {t['topic']}")
 
-# --- ۲. د پلان جوړونې برخه ---
-elif menu == s["plan"]:
-    st.header(f"📅 {s['plan']}")
-    
-    col1, col2 = st.columns(2)
-    with col1:
-        subject = st.text_input("مضمون")
-        grade = st.selectbox("ټولګی", ["۱۰", "۱۱", "۱۲", "پوهنتون"])
-    with col2:
-        plan_type = st.selectbox("د پلان ډول", ["کلنی", "میاشتنی", "اونیز", "ساعتوار"])
-    
-    if st.button("پلان جوړ کړه"):
-        st.success(f"د {subject} لپاره {plan_type} پلان په بریالیتوب سره جوړ شو.")
-        # دلته یو نمونه جدول ښیو
-        data = {
-            "اونۍ/ساعت": ["لومړی", "دوهم", "دریم"],
-            "موضوع": ["پېژندنه", "اصلي درس", "تکرار"],
-            "هدف": ["پوهېدل", "تحلیل", "ارزیابي"],
-            "رخصتي/امتحان": ["نسته", "نسته", "چهارنیم میاشتنی"]
-        }
-        st.table(pd.DataFrame(data))
+# -------------------------
+# Generate Plan
+# -------------------------
+if st.button(f"📅 {t['generate']}"):
+    st.subheader(f"📖 {t['plan']}")
 
-# --- ۳. د فایل اپلوډ او سوالونو برخه ---
-elif menu == s["gen_q"]:
-    st.header(f"📝 {s['gen_q']}")
-    
-    uploaded_file = st.file_uploader(s["upload"], type=["pdf", "docx", "txt", "jpg", "png"])
-    
-    if uploaded_file is not None:
-        st.success("فایل په بریالیتوب سره اپلوډ شو. سیسټم د متن په تحلیل بوخت دی...")
-        
-        difficulty = st.select_slider("د سوالونو کچه انتخاب کړئ", options=["آسان", "متوسط", "سخت"])
-        
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            if st.button("تشریحي سوالونه"):
-                st.subheader("تشریحي سوالونه")
-                st.write("۱. د پورته متن خلاصه ولیکئ؟")
-                st.write("۲. د موضوع اصلي هدف څه و؟")
-        
-        with col2:
-            if st.button("چهارځوابه (MCQ)"):
-                st.subheader("چهارځوابه سوالونه")
-                st.write("۱. د متن مطابق سم ځواب کوم دی؟")
-                st.write("الف) اختیار ۱  ب) اختیار ۲")
-        
-        with col3:
-            if st.button("خالي ځایونه"):
-                st.subheader("خالي ځایونه")
-                st.write("۱. په متن کې د .......... کلمه خورا مهمه ده.")
+    st.markdown(f"""
+    ### 🎯 Objective:
+    Understand {topic}
 
-# د اپلیکیشن فوټر (Footer)
-st.sidebar.markdown("---")
-st.sidebar.write(f"© ٢٠٢٦ - {USER_INFO['نام']}")
+    ### 🧠 Activities:
+    - Explanation
+    - Group Work
+    - Practice
+
+    ### 📊 Assessment:
+    - Quiz
+    - Homework
+    """)
+
+# -------------------------
+# File Upload
+# -------------------------
+uploaded_file = st.file_uploader("📂 Upload File", type=["pdf", "txt", "docx"])
+
+# -------------------------
+# Question Generator
+# -------------------------
+if st.button(f"❓ {t['questions']}"):
+    st.subheader("🧪 Questions")
+
+    st.write("🟢 Easy:")
+    st.write(f"What is {topic}?")
+
+    st.write("🟡 Medium:")
+    st.write(f"Explain {topic} with example.")
+
+    st.write("🔴 Hard:")
+    st.write(f"Analyze and solve problems related to {topic}.")
