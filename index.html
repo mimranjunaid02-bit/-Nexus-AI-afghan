@@ -1,38 +1,310 @@
 <!DOCTYPE html>
-<html>
+<html lang="ps" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>استاد یار AI</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استاد یار | Ustad Yar</title>
+    <!-- د ښکلي ډیزاین لپاره Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- د آیکونونو لپاره FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- د پښتو فونټ -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Naskh Arabic', serif;
+            background-color: #f3f4f6;
+        }
+        
+        /* د سکول بار ډیزاین */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4F46E5; 
+            border-radius: 4px;
+        }
+    </style>
 </head>
+<body class="text-gray-800">
 
-<body>
+    <!-- اصلي کانټینر -->
+    <div class="flex h-screen overflow-hidden">
 
-<h2>📘 استاد یار AI</h2>
+        <!-- ۱. سایډبار (Sidebar) - ښیې خوا مینو -->
+        <aside class="w-64 bg-indigo-900 text-white flex flex-col shadow-2xl z-20 hidden md:flex">
+            <!-- لوګو -->
+            <div class="h-20 flex items-center justify-center border-b border-indigo-800">
+                <i class="fas fa-chalkboard-teacher text-3xl ml-3 text-yellow-400"></i>
+                <h1 class="text-2xl font-bold">استاد یار</h1>
+            </div>
 
-<input id="subject" placeholder="Subject"><br><br>
-<input id="topic" placeholder="Topic"><br><br>
+            <!-- د کارونکي پروفایل -->
+            <div class="p-6 border-b border-indigo-800 bg-indigo-800">
+                <div class="flex items-center mb-3">
+                    <div class="w-12 h-12 rounded-full bg-yellow-400 flex items-center justify-center text-indigo-900 font-bold text-xl border-2 border-white">
+                        ع
+                    </div>
+                    <div class="mr-3">
+                        <p class="font-bold text-sm">محمد عمران عمر</p>
+                        <p class="text-xs text-indigo-300">ادمین</p>
+                    </div>
+                </div>
+                <p class="text-xs text-indigo-200"><i class="fas fa-map-marker-alt ml-1"></i>میدان وردګ، جغتو</p>
+            </div>
 
-<input type="file" id="file"><br><br>
+            <!-- مینو لینکونه -->
+            <nav class="flex-1 overflow-y-auto py-4">
+                <a href="#" onclick="switchTab('dashboard')" class="flex items-center py-3 px-6 bg-indigo-800 border-r-4 border-yellow-400 text-white mb-1">
+                    <i class="fas fa-home ml-3 w-5"></i>
+                    <span>کور پاڼه</span>
+                </a>
+                <a href="#" onclick="switchTab('planner')" class="flex items-center py-3 px-6 hover:bg-indigo-800 hover:text-white text-indigo-100 transition mb-1">
+                    <i class="fas fa-calendar-alt ml-3 w-5"></i>
+                    <span>درسي پلان جوړول</span>
+                </a>
+                <a href="#" class="flex items-center py-3 px-6 hover:bg-indigo-800 hover:text-white text-indigo-100 transition mb-1">
+                    <i class="fas fa-question-circle ml-3 w-5"></i>
+                    <span>د سوالونو بانک</span>
+                </a>
+                <a href="#" class="flex items-center py-3 px-6 hover:bg-indigo-800 hover:text-white text-indigo-100 transition mb-1">
+                    <i class="fas fa-users ml-3 w-5"></i>
+                    <span>د زده کوونکو ارزیابي</span>
+                </a>
+            </nav>
+        </aside>
 
-<button onclick="generate()">Generate AI Plan + Questions</button>
+        <!-- ۲. اصلي محتوا (Main Content) -->
+        <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+            
+            <!-- سرپاڼه (Header) -->
+            <header class="h-20 bg-white shadow-sm flex items-center justify-between px-8">
+                <div class="flex items-center md:hidden">
+                    <button class="text-gray-600 text-2xl focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="text-xl font-bold mr-4 text-indigo-900">استاد یار</h1>
+                </div>
+                <h2 class="text-xl font-bold text-gray-700 hidden md:block">د درسي پلانونو مدیریت سیستم</h2>
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <button class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 relative">
+                        <i class="fas fa-bell"></i>
+                        <span class="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
+                    </button>
+                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow transition">
+                        <i class="fas fa-plus ml-2"></i>نوی مضمون
+                    </button>
+                </div>
+            </header>
 
-<pre id="output"></pre>
+            <!-- د محتوا برخه -->
+            <div class="flex-1 overflow-y-auto p-8" id="main-container">
+                
+                <!-- د ښه راغلاست پیغام -->
+                <div class="bg-gradient-to-l from-indigo-600 to-blue-500 rounded-2xl p-8 text-white mb-8 shadow-lg flex justify-between items-center">
+                    <div>
+                        <h2 class="text-3xl font-bold mb-2">سلام، استاد محمد عمران! 👋</h2>
+                        <p class="text-indigo-100">نن مو کوم مضمون تدریس کوئ؟ راځئ چې یو منظم ساعتوار پلان ورته جوړ کړو.</p>
+                    </div>
+                    <i class="fas fa-book-reader text-6xl text-indigo-200 opacity-50 hidden md:block"></i>
+                </div>
 
-<script>
-async function generate(){
-    let subject = document.getElementById("subject").value;
-    let topic = document.getElementById("topic").value;
+                <!-- د پلان جوړولو فورمه (Card) -->
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <div class="flex items-center justify-between mb-6 border-b pb-4">
+                        <h3 class="text-lg font-bold text-gray-800"><i class="fas fa-magic ml-2 text-indigo-600"></i>د ځیرک پلان جنراتور</h3>
+                        <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-bold">AI فعال دی</span>
+                    </div>
 
-    let res = await fetch("http://localhost:3000/generate", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({subject, topic})
-    });
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- کیڼ اړخ: معلومات -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">د مضمون نوم</label>
+                                <input type="text" class="w-full border-gray-300 rounded-lg border p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" placeholder="مثلاً: ریاضي، پښتو، بیولوژي...">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">ټولګی</label>
+                                    <select class="w-full border-gray-300 rounded-lg border p-3 outline-none bg-white">
+                                        <option>۷ ټولګی</option>
+                                        <option>۸ ټولګی</option>
+                                        <option>۹ ټولګی</option>
+                                        <option>۱۰ ټولګی</option>
+                                        <option>۱۱ ټولګی</option>
+                                        <option>۱۲ ټولګی</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">ژبه</label>
+                                    <select class="w-full border-gray-300 rounded-lg border p-3 outline-none bg-white">
+                                        <option>پښتو</option>
+                                        <option>دري</option>
+                                        <option>English</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">د تدریس میتود</label>
+                                <select class="w-full border-gray-300 rounded-lg border p-3 outline-none bg-white">
+                                    <option>تشریحي (Lecture)</option>
+                                    <option>ګروپي کار (Group Work)</option>
+                                    <option>پوښتنه او ځواب (Q&A)</option>
+                                    <option>عملي/لابراتوار (Practical)</option>
+                                </select>
+                            </div>
+                        </div>
 
-    let data = await res.json();
-    document.getElementById("output").innerText = data.result;
-}
-</script>
+                        <!-- ښی اړخ: فایل اپلوډ -->
+                        <div class="border-2 border-dashed border-indigo-300 rounded-xl p-6 flex flex-col items-center justify-center bg-indigo-50 hover:bg-indigo-100 transition cursor-pointer text-center">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-indigo-400 mb-3"></i>
+                            <h4 class="font-bold text-indigo-900">درسي کتاب یا PDF دلته راکش کړئ</h4>
+                            <p class="text-sm text-gray-500 mt-2">یا د فایل انتخابولو لپاره کلیک وکړئ</p>
+                            <input type="file" class="hidden" id="file-upload">
+                            <button onclick="document.getElementById('file-upload').click()" class="mt-4 bg-white border border-indigo-200 text-indigo-700 px-4 py-2 rounded-lg text-sm font-medium shadow-sm hover:shadow-md transition">فایل انتخاب کړئ</button>
+                        </div>
+                    </div>
 
+                    <div class="mt-8 flex justify-end">
+                        <button onclick="generatePlan()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg font-bold shadow-lg transform hover:-translate-y-1 transition flex items-center">
+                            <i class="fas fa-cogs ml-2"></i>
+                            پلان او سوالونه جوړ کړه
+                        </button>
+                    </div>
+                </div>
+
+                <!-- پایله (د پلان جدول) - په پیل کې پټ وي -->
+                <div id="plan-result" class="hidden">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
+                            <h3 class="font-bold text-lg">د نن ورځې ساعتوار پلان (۵۰ دقیقې)</h3>
+                            <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fas fa-print ml-1"></i> چاپول (Print)
+                            </button>
+                        </div>
+                        <div class="p-6">
+                            <!-- د پلان سرلیکونه -->
+                            <div class="flex justify-between mb-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <div>
+                                    <p class="text-gray-500 text-xs">مضمون</p>
+                                    <p class="font-bold text-lg text-indigo-900">کیمیا - ۱۰ ټولګی</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-xs">موضوع</p>
+                                    <p class="font-bold text-gray-800">د عضوي مرکباتو خواص</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-xs">میتود</p>
+                                    <p class="font-bold text-green-600">ګروپي فعالیت</p>
+                                </div>
+                            </div>
+
+                            <!-- مهالویش جدول -->
+                            <div class="relative">
+                                <!-- عمودي کرښه -->
+                                <div class="absolute top-0 bottom-0 right-4 w-0.5 bg-indigo-100"></div>
+
+                                <!-- ۱. مقدمه -->
+                                <div class="mb-6 flex items-start relative pr-10">
+                                    <div class="absolute right-2 top-1 w-4 h-4 bg-indigo-500 rounded-full border-2 border-white ring-2 ring-indigo-100"></div>
+                                    <div class="flex-1 bg-white border border-gray-100 rounded-lg p-4 shadow-sm hover:shadow-md transition">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <h4 class="font-bold text-indigo-700">۱. پیل او ذهني امادګي</h4>
+                                            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">۵ دقیقې</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">د تېر درس لنډه پوښتنه او د نوي موضوع سره د زده کوونکو نښلول. پوښتنه: "ولې تېل په اوبو کې نه حل کیږي؟"</p>
+                                    </div>
+                                </div>
+
+                                <!-- ۲. اصلي درس -->
+                                <div class="mb-6 flex items-start relative pr-10">
+                                    <div class="absolute right-2 top-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white ring-2 ring-green-100"></div>
+                                    <div class="flex-1 bg-white border border-gray-100 rounded-lg p-4 shadow-sm hover:shadow-md transition">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <h4 class="font-bold text-green-700">۲. ګروپي فعالیت (اصلي برخه)</h4>
+                                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">۳۰ دقیقې</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">شاګردان په ۴ ګروپونو وویشئ. هر ګروپ ته د کاربن یو ځانګړتیا ورکړئ ترڅو په کتاب کې یې پیدا کړي او په تخته یې ولیکي.</p>
+                                        <div class="mt-3 bg-yellow-50 border-r-4 border-yellow-400 p-2 text-xs text-yellow-800">
+                                            <strong>لارښود:</strong> استاد باید د ګروپونو ترمنځ وګرځي او لارښوونه وکړي.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ۳. ارزیابي -->
+                                <div class="flex items-start relative pr-10">
+                                    <div class="absolute right-2 top-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white ring-2 ring-red-100"></div>
+                                    <div class="flex-1 bg-white border border-gray-100 rounded-lg p-4 shadow-sm hover:shadow-md transition">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <h4 class="font-bold text-red-700">۳. پایله او کورنۍ دنده</h4>
+                                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded">۱۵ دقیقې</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">د ګروپونو د کار جمع بندي کول. کورنۍ دنده: د فصل د پای ۳ سوالونه حل کول.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- د سوالونو برخه -->
+                    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-purple-500">
+                            <h4 class="font-bold text-gray-800 mb-4">تشریحي سوالونه</h4>
+                            <ul class="list-disc list-inside space-y-2 text-sm text-gray-600">
+                                <li>د عضوي او غیر عضوي موادو درې عمده توپیرونه ولیکئ.</li>
+                                <li>هایدروکاربنونه څه ته وايي؟ په لنډ ډول یې روښانه کړئ.</li>
+                                <li>د میتان ګاز کیمیاوي فارمول ولیکئ.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-pink-500">
+                            <h4 class="font-bold text-gray-800 mb-4">چهار ځوابه سوالونه</h4>
+                            <div class="space-y-3">
+                                <div class="bg-gray-50 p-3 rounded border">
+                                    <p class="text-sm font-bold mb-2">۱. د الکانونو عمومي فارمول کوم دی؟</p>
+                                    <div class="grid grid-cols-2 gap-2 text-xs text-gray-600">
+                                        <span>الف) CnH2n</span>
+                                        <span class="text-green-600 font-bold">ب) CnH2n+2</span>
+                                        <span>ج) CnH2n-2</span>
+                                        <span>د) هیڅ یو</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ساده جاواسکریپټ د تعامل لپاره -->
+    <script>
+        function generatePlan() {
+            // د بټن کلیک کولو سره لومړی یو "Loading" حالت وښایئ
+            const btn = document.querySelector('button[onclick="generatePlan()"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin ml-2"></i> مهرباني وکړئ صبر...';
+            btn.disabled = true;
+
+            // د ۲ ثانیو وروسته نتیجه ښکاره کړئ (د پروسس تمثیل)
+            setTimeout(() => {
+                document.getElementById('plan-result').classList.remove('hidden');
+                // اتومات لاندې سکرول
+                document.getElementById('plan-result').scrollIntoView({ behavior: 'smooth' });
+                
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 1500);
+        }
+
+        function switchTab(tabName) {
+            // دلته د پاڼو د بدلولو منطق لیکل کیږي
+            console.log(tabName + ' پاڼې ته لاړ شئ');
+        }
+    </script>
 </body>
 </html>
