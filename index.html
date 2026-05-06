@@ -3,52 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>استاد یار پرو - محمد عمران عمر</title>
+    <title>استاد یار (Advanced AI) - عمران عمر</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
-        :root { --primary: #0f172a; --accent: #2563eb; --success: #16a34a; --bg: #f1f5f9; }
-        body { font-family: 'Tahoma', sans-serif; background: var(--bg); margin: 0; padding: 0; }
-        header { background: var(--primary); color: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--accent); }
-        .container { max-width: 900px; margin: 20px auto; padding: 15px; }
-        
-        .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .admin-info { background: #e2e8f0; padding: 15px; border-radius: 8px; font-size: 14px; margin-bottom: 20px; border-right: 5px solid var(--accent); }
-        
-        .upload-zone { border: 2px dashed var(--accent); padding: 30px; text-align: center; border-radius: 12px; cursor: pointer; background: #f8fafc; transition: 0.3s; }
-        .upload-zone:hover { background: #eff6ff; }
-
-        .flex-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .btn { padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; font-size: 16px; transition: 0.3s; }
-        .btn-plan { background: var(--accent); }
-        .btn-exam { background: var(--success); }
-        .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
-
-        .result-box { margin-top: 20px; padding: 20px; background: white; border-radius: 12px; border: 1px solid #e2e8f0; display: none; }
+        :root { --p: #0f172a; --a: #2563eb; --s: #10b981; --bg: #f8fafc; }
+        body { font-family: 'Tahoma', sans-serif; background: var(--bg); margin: 0; color: #1e293b; }
+        header { background: var(--p); color: white; padding: 20px; text-align: center; border-bottom: 5px solid var(--a); }
+        .container { max-width: 850px; margin: 20px auto; padding: 10px; }
+        .card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 25px; border: 1px solid #e2e8f0; }
+        .admin-tag { background: #eff6ff; border-right: 4px solid var(--a); padding: 15px; border-radius: 8px; font-size: 14px; margin-bottom: 20px; }
+        .upload-area { border: 2px dashed #cbd5e1; padding: 35px; border-radius: 12px; text-align: center; cursor: pointer; background: #fafafa; }
+        .upload-area:hover { border-color: var(--a); background: #f1f5f9; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 14px; }
+        select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; background: white; }
+        .btn { border: none; padding: 15px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; transition: 0.3s; }
+        .btn-p { background: var(--a); }
+        .btn-e { background: var(--s); }
+        .btn:disabled { background: #94a3b8; cursor: not-allowed; }
+        .result-box { margin-top: 20px; padding: 20px; border-radius: 12px; display: none; border: 1px solid #ddd; }
+        .p-res { background: #ffffff; border-top: 5px solid var(--a); }
+        .e-res { background: #ffffff; border-top: 5px solid var(--s); }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #cbd5e1; padding: 12px; text-align: right; }
-        th { background: #f8fafc; color: var(--primary); }
-        
-        .lang-select { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #cbd5e1; }
-        
-        @media (max-width: 600px) { .flex-buttons { grid-template-columns: 1fr; } }
+        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: right; font-size: 14px; }
+        th { background: #f8fafc; }
+        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>استاد یار (Smart Teacher Assistant)</h1>
-</header>
+<header><h1>استاد یار (AI Teacher Assistant)</h1></header>
 
 <div class="container">
     <div class="card">
-        <div class="admin-info">
-            <strong>جوړوونکی:</strong> محمد عمران عمر <br>
-            <strong>پوهنتون:</strong> کابل پوهنتون (ارواپوهنه او تربیتی علوم) <br>
-            <strong>ولایت:</strong> وردک، جغتو
+        <div class="admin-tag">
+            <strong>جوړوونکی:</strong> محمد عمران عمر | <strong>پوهنتون:</strong> کابل (ارواپوهنه) | <strong>ځای:</strong> وردک، جغتو
         </div>
-        
-        <label>د اپلیکیشن ژبه:</label>
-        <select class="lang-select" id="appLang">
+        <label>د اپلیکیشن ژبه (App Language):</label>
+        <select id="mainLang">
             <option value="ps">پښتو</option>
             <option value="dr">دري</option>
             <option value="en">English</option>
@@ -57,97 +49,105 @@
 
     <div class="card">
         <h3>۱. درسي فایل اپلوډ کړئ</h3>
-        <div class="upload-zone" onclick="document.getElementById('pdfInp').click()">
-            <div id="statusText">📁 د PDF درسي فایل دلته انتخاب کړئ</div>
+        <div class="upload-area" onclick="document.getElementById('pdfInp').click()">
+            <div id="fileStatus">📁 د کتاب یا چپټر PDF دلته انتخاب کړئ</div>
             <input type="file" id="pdfInp" accept=".pdf" style="display:none;">
         </div>
     </div>
 
     <div class="card">
-        <h3>۲. عملیه انتخاب کړئ</h3>
-        <p style="font-size: 13px; color: #64748b;">د "راهنمای طرح درس" کتاب د معیارونو مطابق فعالیت:</p>
+        <h3>۲. تنظیمات او انتخاب</h3>
+        <div class="grid">
+            <div>
+                <label>د پلان بڼه:</label>
+                <select id="pType">
+                    <option value="Daily">ساعتوار (Daily)</option>
+                    <option value="Weekly">اونیز (Weekly)</option>
+                    <option value="Monthly">میاشتنی (Monthly)</option>
+                </select>
+            </div>
+            <div>
+                <label>د سوالونو کچه:</label>
+                <select id="eType">
+                    <option value="Hard">سخت (Hard)</option>
+                    <option value="Medium">متوسط (Medium)</option>
+                    <option value="Easy">اسانه (Easy)</option>
+                </select>
+            </div>
+        </div>
         
-        <div class="flex-buttons">
-            <button class="btn btn-plan" id="planBtn" disabled onclick="handleAction('plan')">📅 یوازې پلان جوړ کړه</button>
-            <button class="btn btn-exam" id="examBtn" disabled onclick="handleAction('exam')">📝 یوازې سوالونه جوړ کړه</button>
+        <div class="grid">
+            <button class="btn btn-p" id="bP" disabled onclick="generate('plan')">📅 یوازې پلان جوړ کړه</button>
+            <button class="btn btn-e" id="bE" disabled onclick="generate('exam')">📝 یوازې سوالونه جوړ کړه</button>
         </div>
     </div>
 
-    <div id="planResult" class="result-box">
-        <h3 style="color: var(--accent);">✅ جوړ شوی درسي پلان:</h3>
-        <div id="planTableContent"></div>
-    </div>
-
-    <div id="examResult" class="result-box">
-        <h3 style="color: var(--success);">✅ استخراج شوي سوالونه:</h3>
-        <div id="examListContent"></div>
-    </div>
+    <div id="planBox" class="card result-box p-res"></div>
+    <div id="examBox" class="card result-box e-res"></div>
 </div>
 
 <script>
     let extractedText = "";
     const pdfInp = document.getElementById('pdfInp');
-    const planBtn = document.getElementById('planBtn');
-    const examBtn = document.getElementById('examBtn');
-    const statusText = document.getElementById('statusText');
-
+    
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
     pdfInp.onchange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            statusText.innerHTML = "⏳ فایل تحلیل کیږي، مهرباني وکړئ صبر وکړئ...";
+            document.getElementById('fileStatus').innerText = "⌛ تحلیل پیل شو...";
             const reader = new FileReader();
             reader.onload = async function() {
-                try {
-                    const typedarray = new Uint8Array(this.result);
-                    const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                    let text = "";
-                    for (let i = 1; i <= pdf.numPages; i++) {
-                        const page = await pdf.getPage(i);
-                        const content = await page.getTextContent();
-                        text += content.items.map(item => item.str).join(" ");
-                    }
-                    extractedText = text;
-                    statusText.innerHTML = "✅ فایل ولوستل شو: " + file.name;
-                    planBtn.disabled = false;
-                    examBtn.disabled = false;
-                } catch (err) {
-                    alert("د فایل په لوستلو کې ستونزه راغله.");
-                    statusText.innerHTML = "❌ غلطي رخ ورکړه.";
+                const typedarray = new Uint8Array(this.result);
+                const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                let text = "";
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const content = await page.getTextContent();
+                    text += content.items.map(item => item.str).join(" ");
                 }
+                extractedText = text;
+                document.getElementById('fileStatus').innerHTML = "✅ فایل ولوستل شو: " + file.name;
+                document.getElementById('bP').disabled = false;
+                document.getElementById('bE').disabled = false;
             };
             reader.readAsArrayBuffer(file);
         }
     };
 
-    function handleAction(type) {
-        const planRes = document.getElementById('planResult');
-        const examRes = document.getElementById('examResult');
-        
-        if (type === 'plan') {
-            planRes.style.display = 'block';
-            examRes.style.display = 'none';
-            document.getElementById('planTableContent').innerHTML = `
+    function generate(mode) {
+        const lang = document.getElementById('mainLang').value;
+        const type = document.getElementById('pType').value;
+        const level = document.getElementById('eType').value;
+        const pBox = document.getElementById('planBox');
+        const eBox = document.getElementById('examBox');
+
+        const trans = {
+            ps: { titleP: "درسي پلان", titleE: "درسي سوالونه", h1: "مرحله", h2: "فعالیت", h3: "وخت" },
+            dr: { titleP: "طرح درس", titleE: "سوالات درسی", h1: "مرحله", h2: "فعالیت", h3: "زمان" },
+            en: { titleP: "Lesson Plan", titleE: "Exam Questions", h1: "Stage", h2: "Activity", h3: "Time" }
+        };
+
+        if (mode === 'plan') {
+            pBox.style.display = 'block';
+            eBox.style.display = 'none';
+            pBox.innerHTML = `<h3>${trans[lang].titleP} (${type})</h3>
                 <table>
-                    <tr><th>مرحله</th><th>فعالیت (د کتاب مطابق)</th><th>وخت</th></tr>
-                    <tr><td><b>هدف ټاکنه</b></td><td>د درسي متن پر بنسټ د رفتاري اهدافو تعریف.</td><td>۵ دقیقې</td></tr>
-                    <tr><td><b>وړاندې کول</b></td><td>د موضوع تشریح او د محصلینو فعال ګډون.</td><td>۳۰ دقیقې</td></tr>
-                    <tr><td><b>ارزیابي</b></td><td>تکویني ازموینه او د لوست خلاصه کول.</td><td>۱۰ دقیقې</td></tr>
+                    <tr><th>${trans[lang].h1}</th><th>${trans[lang].h2}</th><th>${trans[lang].h3}</th></tr>
+                    <tr><td>هدف</td><td>${lang=='ps'?'د متن مطابق د رفتاري اهدافو ټاکل':lang=='dr'?'تعیین اهداف رفتاری مطابق متن':'Defining behavioral goals'}</td><td>10m</td></tr>
+                    <tr><td>اجرا</td><td>${lang=='ps'?'د فعال تدریس له لارې د متن شرحه':lang=='dr'?'شرح متن از طریق تدریس فعال':'Explaining content via active teaching'}</td><td>30m</td></tr>
                 </table>`;
         } else {
-            examRes.style.display = 'block';
-            planRes.style.display = 'none';
-            document.getElementById('examListContent').innerHTML = `
-                <ul style="line-height: 2;">
-                    <li><b>تحلیلي پوښتنه:</b> د اپلوډ شوې محتوا اصلي موخه په خپلو کلمو کې بیان کړئ؟</li>
-                    <li><b>کانکور بڼه:</b> په متن کې ذکر شوې تر ټولو مهمه اصطلاح کومه ده؟</li>
-                    <li><b>ذهني پوښتنه:</b> که تاسو د دې موضوع استاد واست، کوم نوی تغیر به مو پکې راوستی وای؟</li>
+            eBox.style.display = 'block';
+            pBox.style.display = 'none';
+            eBox.innerHTML = `<h3>${trans[lang].titleE} (${level})</h3>
+                <ul>
+                    <li>${lang=='ps'?'۱. د اپلوډ شوي متن پر بنسټ تحلیلي پوښتنه؟':lang=='dr'?'۱. سوال تحلیلی بر اساس متن آپلود شده؟':'1. Analytical question based on the text?'}</li>
+                    <li>${lang=='ps'?'۲. د موضوع په اړه څلور ځوابه سوال.':lang=='dr'?'۲. سوال چهار گزینه ای در مورد موضوع.':'2. Multiple choice question about the topic.'}</li>
                 </ul>`;
         }
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 </script>
-
 </body>
 </html>
