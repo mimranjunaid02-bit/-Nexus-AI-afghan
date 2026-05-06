@@ -1,104 +1,133 @@
-import streamlit as st
-import pandas as pd
-from datetime import datetime
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>استاد یار | Ustad Yar</title>
 
-# -------------------------
-# App Config
-# -------------------------
-st.set_page_config(page_title="استاد یار | Ustad Yar", layout="wide")
-
-# -------------------------
-# User Info (Settings)
-# -------------------------
-USER_INFO = {
-    "name": "محمد عمران عمر",
-    "province": "وردک",
-    "district": "جغتو"
+<style>
+body {
+    font-family: Arial;
+    margin: 0;
+    background: #f4f6f9;
 }
 
-# -------------------------
-# Language System
-# -------------------------
-lang = st.sidebar.selectbox("🌐 Language / ژبه", ["پښتو", "دری", "English"])
-
-strings = {
-    "پښتو": {
-        "title": "استاد یار",
-        "subject": "مضمون",
-        "topic": "موضوع",
-        "generate": "پلان جوړ کړه",
-        "plan": "درسي پلان",
-        "questions": "سوالونه جوړ کړه"
-    },
-    "دری": {
-        "title": "استاد یار",
-        "subject": "مضمون",
-        "topic": "موضوع",
-        "generate": "ایجاد پلان",
-        "plan": "پلان درسی",
-        "questions": "ساخت سوال"
-    },
-    "English": {
-        "title": "Ustad Yar",
-        "subject": "Subject",
-        "topic": "Topic",
-        "generate": "Generate Plan",
-        "plan": "Lesson Plan",
-        "questions": "Generate Questions"
-    }
+header {
+    background: #2b7cff;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 22px;
 }
 
-t = strings[lang]
+.container {
+    padding: 15px;
+}
 
-# -------------------------
-# Title
-# -------------------------
-st.title(f"📘 {t['title']}")
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 
-st.write(f"👤 {USER_INFO['name']} | {USER_INFO['province']} - {USER_INFO['district']}")
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
 
-# -------------------------
-# Inputs
-# -------------------------
-subject = st.text_input(f"📚 {t['subject']}")
-topic = st.text_input(f"📝 {t['topic']}")
+button {
+    background: #2b7cff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
 
-# -------------------------
-# Generate Plan
-# -------------------------
-if st.button(f"📅 {t['generate']}"):
-    st.subheader(f"📖 {t['plan']}")
+button:hover {
+    background: #1a5edb;
+}
 
-    st.markdown(f"""
-    ### 🎯 Objective:
-    Understand {topic}
+.output {
+    background: #eef3ff;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+</style>
+</head>
 
-    ### 🧠 Activities:
-    - Explanation
-    - Group Work
-    - Practice
+<body>
 
-    ### 📊 Assessment:
-    - Quiz
-    - Homework
-    """)
+<header>📘 استاد یار | Ustad Yar</header>
 
-# -------------------------
-# File Upload
-# -------------------------
-uploaded_file = st.file_uploader("📂 Upload File", type=["pdf", "txt", "docx"])
+<div class="container">
 
-# -------------------------
-# Question Generator
-# -------------------------
-if st.button(f"❓ {t['questions']}"):
-    st.subheader("🧪 Questions")
+<div class="card">
+<h3>👤 User Info</h3>
+<p>محمد عمران عمر | وردک - جغتو</p>
+</div>
 
-    st.write("🟢 Easy:")
-    st.write(f"What is {topic}?")
+<div class="card">
+<h3>🌐 Language</h3>
+<select id="lang">
+<option>Pashto</option>
+<option>Dari</option>
+<option>English</option>
+</select>
+</div>
 
-    st.write("🟡 Medium:")
-    st.write(f"Explain {topic} with example.")
+<div class="card">
+<h3>📚 Lesson Plan</h3>
+<input type="text" id="subject" placeholder="Subject">
+<input type="text" id="topic" placeholder="Topic">
+<button onclick="generatePlan()">Generate Plan</button>
 
-    st.write("🔴 Hard:")
-    st.write(f"Analyze and solve problems related to {topic}.")
+<div id="planOutput" class="output"></div>
+</div>
+
+<div class="card">
+<h3>📂 Upload File</h3>
+<input type="file" id="file">
+</div>
+
+<div class="card">
+<h3>❓ Question Generator</h3>
+<button onclick="generateQuestions()">Generate Questions</button>
+
+<div id="questionOutput" class="output"></div>
+</div>
+
+</div>
+
+<script>
+function generatePlan() {
+    let subject = document.getElementById("subject").value;
+    let topic = document.getElementById("topic").value;
+
+    document.getElementById("planOutput").innerHTML = `
+    <b>Subject:</b> ${subject} <br>
+    <b>Topic:</b> ${topic} <br><br>
+
+    🎯 Objective: Understand ${topic} <br>
+    🧠 Activities: Explanation, Practice, Group Work <br>
+    📊 Assessment: Quiz + Homework
+    `;
+}
+
+function generateQuestions() {
+    let topic = document.getElementById("topic").value;
+
+    document.getElementById("questionOutput").innerHTML = `
+    🟢 Easy: What is ${topic}? <br><br>
+    🟡 Medium: Explain ${topic} with example. <br><br>
+    🔴 Hard: Analyze ${topic} in detail.
+    `;
+}
+</script>
+
+</body>
+    </html>
