@@ -3,152 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>استاد یار پرو - محمد عمران عمر</title>
+    <title>استاد یار (Smart Lesson Plan) - محمد عمران عمر</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
         :root {
-            --primary: #0f172a;
-            --accent: #3b82f6;
-            --success: #10b981;
-            --bg: #f8fafc;
-            --sidebar-w: 260px;
+            --primary: #1e293b;
+            --accent: #2563eb;
+            --secondary: #64748b;
+            --bg: #f1f5f9;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; display: flex; height: 100vh; overflow: hidden; }
+        body { font-family: 'Tahoma', sans-serif; background: var(--bg); margin: 0; display: flex; height: 100vh; color: #334155; }
         
-        /* Sidebar Styles */
-        .sidebar { width: var(--sidebar-w); background: var(--primary); color: white; display: flex; flex-direction: column; padding: 20px; transition: 0.3s; }
-        .sidebar h2 { font-size: 22px; border-bottom: 1px solid #334155; padding-bottom: 15px; margin-bottom: 25px; color: var(--accent); }
-        .nav-link { padding: 12px 15px; border-radius: 8px; cursor: pointer; margin-bottom: 10px; transition: 0.3s; display: flex; align-items: center; }
+        /* Sidebar */
+        .sidebar { width: 260px; background: var(--primary); color: white; padding: 20px; display: flex; flex-direction: column; }
+        .sidebar h2 { color: #38bdf8; font-size: 20px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+        .nav-link { padding: 12px; margin: 5px 0; border-radius: 8px; cursor: pointer; transition: 0.3s; }
         .nav-link:hover, .nav-link.active { background: var(--accent); }
-        
+        .user-card { margin-top: auto; background: #0f172a; padding: 15px; border-radius: 10px; font-size: 13px; line-height: 1.6; border-right: 4px solid var(--accent); }
+
         /* Main Content */
-        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
-        header { background: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .container { padding: 30px; max-width: 1000px; margin: 0 auto; width: 100%; }
-        
-        /* Profile Card */
-        .user-info { background: #1e293b; padding: 15px; border-radius: 12px; margin-top: auto; font-size: 13px; line-height: 1.6; }
+        .main { flex: 1; overflow-y: auto; padding: 30px; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        .upload-zone { border: 2px dashed #cbd5e1; padding: 30px; text-align: center; border-radius: 12px; cursor: pointer; background: #f8fafc; }
+        .upload-zone:hover { border-color: var(--accent); }
 
-        /* Cards & UI Elements */
-        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 25px; border: 1px solid #e2e8f0; }
-        .upload-zone { border: 2px dashed #cbd5e1; padding: 40px; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.3s; background: #f1f5f9; }
-        .upload-zone:hover { border-color: var(--accent); background: #eff6ff; }
+        /* Table & Forms */
+        .controls { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin: 20px 0; }
+        select, button { padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; font-family: inherit; }
+        .btn-gen { background: var(--accent); color: white; border: none; cursor: pointer; font-weight: bold; }
         
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 600; color: #475569; }
-        select, input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; outline: none; }
-        
-        .btn-action { background: var(--accent); color: white; border: none; padding: 14px 28px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; margin-top: 15px; }
-        .btn-action:disabled { background: #94a3b8; cursor: not-allowed; }
-
-        /* Output Tables */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 15px; border: 1px solid #e2e8f0; text-align: right; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
+        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: right; }
         th { background: #f8fafc; color: var(--primary); }
-        
+
         .hidden { display: none; }
-        @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; height: auto; } .main-content { height: 100vh; } .grid { grid-template-columns: 1fr; } }
+        .badge { background: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
     </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <h2>استاد یار Pro</h2>
-    <div class="nav-link active" onclick="showPage('planPage')">📅 درسي پلان جوړول</div>
-    <div class="nav-link" onclick="showPage('examPage')">📝 سوالونه جوړول</div>
-    <div class="nav-link" onclick="showPage('settingsPage')">⚙️ تنظیمات</div>
+    <h2>استاد یار پرو</h2>
+    <div class="nav-link active" onclick="showPage('planSection')">📖 درسي پلان (کتاب محوره)</div>
+    <div class="nav-link" onclick="showPage('examSection')">📝 د ازموینې تنظیم</div>
     
-    <div class="user-info">
+    <div class="user-card">
         <strong>محمد عمران عمر</strong><br>
         کابل پوهنتون - ارواپوهنه<br>
-        وردک، جغتو
+        وردک، جغتو (جغتو ولسوالۍ)
     </div>
 </div>
 
-<div class="main-content">
-    <header>
-        <span id="pageTitle">د درسي پلان مدیریت</span>
-        <div style="width: 150px;">
-            <select id="appLang">
-                <option value="ps">پښتو</option>
-                <option value="dr">دري</option>
-                <option value="en">English</option>
-            </select>
+<div class="main">
+    <div class="card">
+        <h3>د درسي پلان لارښود (PDF تحلیل)</h3>
+        <p style="font-size: 13px; color: var(--secondary);">د "راهنمای طرح درس" د اصولو مطابق خپل درسي متن اپلوډ کړئ.</p>
+        <div class="upload-zone" onclick="document.getElementById('pdfInp').click()">
+            <div id="status">📁 درسي فایل (PDF) دلته اپلوډ کړئ</div>
+            <input type="file" id="pdfInp" accept=".pdf" style="display:none;">
         </div>
-    </header>
+    </div>
 
-    <div class="container">
+    <div id="planSection">
         <div class="card">
-            <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
-                <div id="fileStatus">📁 خپل درسي فایل (PDF) دلته اپلوډ کړئ</div>
-                <input type="file" id="fileInput" accept=".pdf" style="display:none;">
+            <div class="controls">
+                <select id="pType">
+                    <option>ساعتوار (Daily Plan)</option>
+                    <option>اونیز (Weekly Plan)</option>
+                    <option>کلنی (Annual Plan)</option>
+                </select>
+                <select id="pLang">
+                    <option value="ps">پښتو</option>
+                    <option value="dr">دري</option>
+                    <option value="en">English</option>
+                </select>
+                <button class="btn-gen" id="runBtn" disabled onclick="generateBookPlan()">پلان جوړ کړه</button>
             </div>
         </div>
 
-        <div id="planPage">
-            <div class="card">
-                <h3>د نوي پلان تنظیمات</h3>
-                <div class="grid">
-                    <div>
-                        <label>د پلان ډول:</label>
-                        <select id="pType">
-                            <option>ساعتوار (Daily)</option>
-                            <option>اونیز (Weekly)</option>
-                            <option>میاشتنی (Monthly)</option>
-                            <option>کلنی (Annual)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>درسي هدف:</label>
-                        <select id="pGoal">
-                            <option>پوهه او درک</option>
-                            <option>تطبیق او مهارت</option>
-                            <option>تحلیل او ارزیابي</option>
-                        </select>
-                    </div>
-                </div>
-                <button class="btn-action" id="genPlanBtn" disabled onclick="generateSmartPlan()">سمارټ پلان جوړ کړه</button>
-            </div>
-            <div id="planResult" class="card hidden">
-                <div id="tableOutput"></div>
-            </div>
+        <div id="resultCard" class="card hidden">
+            <h4 id="resTitle" style="color:var(--accent);"></h4>
+            <div id="planOutput"></div>
         </div>
+    </div>
 
-        <div id="examPage" class="hidden">
-            <div class="card">
-                <h3>د سوالونو اتومات جوړول</h3>
-                <div class="grid">
-                    <div>
-                        <label>د سوالونو سختوالی:</label>
-                        <select>
-                            <option>سخت (Advanced)</option>
-                            <option>متوسط (Intermediate)</option>
-                            <option>اسانه (Basic)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>د سوالونو تعداد:</label>
-                        <input type="number" value="10" min="1">
-                    </div>
-                </div>
-                <button class="btn-action" id="genExamBtn" disabled onclick="generateSmartExam()">سوالونه استخراج کړه</button>
-            </div>
-            <div id="examResult" class="card hidden">
-                <div id="examOutput"></div>
-            </div>
+    <div id="examSection" class="hidden">
+        <div class="card">
+            <h3>د سوالونو اختصاصي بخش</h3>
+            <p>د بلوم د طبقې (Bloom's Taxonomy) مطابق پوښتنې:</p>
+            <div id="examOutput">فایل اپلوډ کړئ ترڅو پوښتنې جوړې شي.</div>
         </div>
-
     </div>
 </div>
 
 <script>
-    let pdfText = "";
+    let extractedText = "";
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-    document.getElementById('fileInput').onchange = async (e) => {
+    document.getElementById('pdfInp').onchange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            document.getElementById('fileStatus').innerHTML = "⏳ فایل تر تحلیل لاندې دی...";
+            document.getElementById('status').innerText = "⌛ د کتاب لوستل پیل شول...";
             const reader = new FileReader();
             reader.onload = async function() {
                 const typedarray = new Uint8Array(this.result);
@@ -159,47 +114,37 @@
                     const content = await page.getTextContent();
                     text += content.items.map(item => item.str).join(" ");
                 }
-                pdfText = text;
-                document.getElementById('fileStatus').innerHTML = "✅ فایل په بریالیتوب سره تحلیل شو!";
-                document.getElementById('genPlanBtn').disabled = false;
-                document.getElementById('genExamBtn').disabled = false;
+                extractedText = text;
+                document.getElementById('status').innerHTML = "✅ <b>" + file.name + "</b> په بریالیتوب تحلیل شو.";
+                document.getElementById('runBtn').disabled = false;
             };
             reader.readAsArrayBuffer(file);
         }
     };
 
-    function showPage(pageId) {
-        document.getElementById('planPage').classList.add('hidden');
-        document.getElementById('examPage').classList.add('hidden');
-        document.getElementById(pageId).classList.remove('hidden');
-        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-        event.currentTarget.classList.add('active');
-    }
-
-    function generateSmartPlan() {
-        document.getElementById('planResult').classList.remove('hidden');
+    function generateBookPlan() {
+        document.getElementById('resultCard').classList.remove('hidden');
         const type = document.getElementById('pType').value;
-        document.getElementById('tableOutput').innerHTML = `
-            <h4>د اپلوډ شوي محتوا مطابق ${type} پلان</h4>
+        document.getElementById('resTitle').innerText = "د لارښود کتاب مطابق " + type;
+        
+        document.getElementById('planOutput').innerHTML = `
             <table>
-                <tr><th>مرحله</th><th>فعالیت</th><th>میتود</th><th>ارزیابي</th></tr>
-                <tr><td>تیاري</td><td>د ذهن چمتو کول</td><td>پوښتنه/ځواب</td><td>شفاهي</td></tr>
-                <tr><td>وړاندې کول</td><td>د متن تشریح</td><td>فعال تدریس</td><td>تحلیلي پوښتنې</td></tr>
-                <tr><td>پایله</td><td>خلاصه او وظیفه</td><td>توضیحي</td><td>کورنۍ دنده</td></tr>
+                <tr><th>د پلان برخه</th><th>محتوا (د لارښود مطابق)</th></tr>
+                <tr><td><b>کلی هدف</b></td><td>د درس د عمومي مفهوم درک او د ژوند سره اړیکه.</td></tr>
+                <tr><td><b>رفتاري اهداف</b></td><td>محصل باید وکولی شي موضوع په خپلو کلمو تشریح کړي. (Cognitive Level)</td></tr>
+                <tr><td><b>تدریسي میتود</b></td><td><span class="badge">فعال میتود</span> کاوشګري او ګروپي بحث.</td></tr>
+                <tr><td><b>رسنۍ/وسایل</b></td><td>کتاب، سلایډونه، سپینه تخته او د قضیې مطالعې پاڼې.</td></tr>
+                <tr><td><b>ارزیابي</b></td><td>تکویني (د درس په جریان کې) او نهایي ازموینه.</td></tr>
             </table>
         `;
     }
 
-    function generateSmartExam() {
-        document.getElementById('examResult').classList.remove('hidden');
-        document.getElementById('examOutput').innerHTML = `
-            <h4>استخراج شوي سوالونه:</h4>
-            <ol>
-                <li><b>تشریحي:</b> د محتوا اصلي فلسفه په ۵ کرښو کې بیان کړئ.</li>
-                <li><b>څلور ځوابه:</b> د متن د موضوع بنسټیز هدف کوم یو دی؟</li>
-                <li><b>خانه خالي:</b> د ارواپوهنې په دې برخه کې _____ تر ټولو مهم رول لري.</li>
-            </ol>
-        `;
+    function showPage(p) {
+        document.getElementById('planSection').classList.add('hidden');
+        document.getElementById('examSection').classList.add('hidden');
+        document.getElementById(p).classList.remove('hidden');
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        event.currentTarget.classList.add('active');
     }
 </script>
 
