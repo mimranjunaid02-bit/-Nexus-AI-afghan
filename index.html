@@ -3,87 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus AI - Stable Version</title>
+    <title>Nexus AI - Secure Mode</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: #fff; }
-        .header { padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: white; z-index: 100; }
-        #chatBox { height: 75vh; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .msg { padding: 14px; border-radius: 20px; max-width: 85%; font-size: 15px; line-height: 1.6; }
-        .user { background: #e9eef6; align-self: flex-end; border-radius: 20px 20px 4px 20px; }
-        .ai { background: #f8f9fa; align-self: flex-start; border-right: 4px solid #1a73e8; white-space: pre-wrap; }
-        .input-bar { position: fixed; bottom: 15px; width: 90%; left: 50%; transform: translateX(-50%); background: #f0f4f9; border-radius: 30px; padding: 10px 20px; display: flex; align-items: center; }
+        :root { --main-blue: #1a73e8; --chat-bg: #f8f9fa; }
+        body { font-family: 'Segoe UI', Arial; margin: 0; background: #fff; color: #202124; }
+        .header { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: white; z-index: 100; }
+        #chatContainer { height: 80vh; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .message { max-width: 85%; padding: 12px 16px; border-radius: 20px; font-size: 15px; line-height: 1.5; }
+        .user-msg { background: #e9eef6; align-self: flex-end; border-radius: 20px 20px 4px 20px; }
+        .ai-msg { background: var(--chat-bg); align-self: flex-start; border-right: 4px solid var(--main-blue); white-space: pre-wrap; }
+        .input-area { position: fixed; bottom: 15px; width: 90%; left: 50%; transform: translateX(-50%); background: #f1f3f4; border-radius: 30px; padding: 8px 15px; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         input { flex: 1; border: none; background: transparent; outline: none; padding: 10px; font-size: 16px; }
+        .key-btn { color: #5f6368; cursor: pointer; margin-left: 10px; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <i class="fas fa-cog" onclick="setupKey()" style="cursor:pointer; color: #5f6368;"></i>
-    <h1 style="font-size:18px; color: #1a73e8;">Nexus AI</h1>
-    <i class="fas fa-user-circle" style="font-size:24px; color: #5f6368;"></i>
-</div>
+    <div class="header">
+        <i class="fas fa-key key-btn" onclick="saveKey()" title="کیلي تنظیم کړئ"></i>
+        <h1 style="font-size: 18px; margin: 0; color: var(--main-blue);">Nexus AI</h1>
+        <i class="fas fa-user-circle" style="font-size: 24px; color: #5f6368;"></i>
+    </div>
 
-<div id="chatBox">
-    <div class="msg ai">سلام عمران جانه! نکسس چمتو دی. <br>که ځواب نه درکوي، پورته په تیري (Settings) کلیک وکړه او نوې کیلي ورکړه.</div>
-</div>
+    <div id="chatContainer">
+        <div class="message ai-msg">سلام عمران جانه! د دې لپاره چې کیلي دې بنده نشي، ما کوډ بدل کړ.
+اوس یوازې یو ځل پورته په **"کیلي" (Key)** نښه کلیک وکړه او خپله نوې API Key هلته ورکه. دا به یوازې ستا په موبایل کې خوندي پاتې شي.</div>
+    </div>
 
-<div class="input-bar">
-    <input type="text" id="userInput" placeholder="دلته پوښتنه ولیکئ...">
-    <i class="fas fa-paper-plane" onclick="askAi()" style="color:#1a73e8; cursor:pointer; font-size: 20px;"></i>
-</div>
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="پوښتنه ولیکئ...">
+        <i class="fas fa-paper-plane" onclick="sendMessage()" style="color: var(--main-blue); cursor: pointer; font-size: 20px;"></i>
+    </div>
 
-<script>
-    let apiKey = localStorage.getItem('nexus_key') || "";
+    <script>
+        // په کوډ کې کیلي نشته، نو روبوټونه یې نه شي موندلی
+        let secureApiKey = localStorage.getItem('user_gemini_key') || "";
 
-    function setupKey() {
-        const key = prompt("خپله نوې API Key دلته پیسټ کړئ:");
-        if(key) {
-            apiKey = key;
-            localStorage.setItem('nexus_key', key);
-            alert("کیلي خوندي شوه!");
-        }
-    }
-
-    async function askAi() {
-        const input = document.getElementById('userInput');
-        const box = document.getElementById('chatBox');
-        const text = input.value.trim();
-
-        if(!text) return;
-        if(!apiKey) { alert("مهرباني وکړئ لومړی کیلي تنظیم کړئ."); return; }
-
-        box.innerHTML += `<div class="msg user">${text}</div>`;
-        input.value = "";
-        
-        const aiDiv = document.createElement('div');
-        aiDiv.className = "msg ai";
-        aiDiv.innerText = "نکسس فکر کوي...";
-        box.appendChild(aiDiv);
-        box.scrollTop = box.scrollHeight;
-
-        try {
-            // ساده او باثباته غوښتنه (پرته له جنجالي فیچرونو)
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ text: text }] }]
-                })
-            });
-
-            const data = await response.json();
-            
-            if (data.candidates && data.candidates[0].content) {
-                aiDiv.innerText = data.candidates[0].content.parts[0].text;
+        function saveKey() {
+            const key = prompt("خپله نوې API Key دلته پیسټ کړئ:");
+            if(key && key.startsWith("AIza")) {
+                secureApiKey = key;
+                localStorage.setItem('user_gemini_key', key);
+                alert("کیلي په بریالیتوب سره خوندي شوه! اوس پوښتنه کولی شئ.");
             } else {
-                aiDiv.innerText = "تېروتنه: ګوګل ستا کیلي بنده کړې ده. مهرباني وکړه نوې کیلي جوړه کړه.";
+                alert("ناسمه کیلي! مهرباني وکړئ سمه API Key ورکړئ.");
             }
-        } catch (e) {
-            aiDiv.innerText = "ارتباط قطع شو. یو ځل VPN چالان کړه.";
         }
-        box.scrollTop = box.scrollHeight;
-    }
-</script>
+
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const chat = document.getElementById('chatContainer');
+            const text = input.value.trim();
+
+            if(!text) return;
+            if(!secureApiKey) {
+                alert("مهرباني وکړئ لومړی په پورته نښه کلیک وکړئ او کیلي تنظیم کړئ.");
+                return;
+            }
+
+            chat.innerHTML += `<div class="message user-msg">${text}</div>`;
+            input.value = "";
+            
+            const aiDiv = document.createElement('div');
+            aiDiv.className = "message ai-msg";
+            aiDiv.innerText = "نکسس ځواب لیکي...";
+            chat.appendChild(aiDiv);
+            chat.scrollTop = chat.scrollHeight;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${secureApiKey}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: text }] }] })
+                });
+
+                const data = await response.json();
+                if(data.candidates) {
+                    aiDiv.innerText = data.candidates[0].content.parts[0].text;
+                } else {
+                    aiDiv.innerText = "تېروتنه: کیلي کار نه کوي یا بنده شوې ده.";
+                }
+            } catch (e) {
+                aiDiv.innerText = "ارتباط قطع شو. یو ځل VPN وګورئ.";
+            }
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        document.getElementById("userInput").addEventListener("keypress", (e) => {
+            if (e.key === "Enter") sendMessage();
+        });
+    </script>
 </body>
 </html>
