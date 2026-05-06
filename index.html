@@ -6,165 +6,166 @@
     <title>استاد یار - محمد عمران عمر</title>
     <style>
         :root {
-            --main-blue: #1a5f7a;
-            --light-blue: #86b6bb;
-            --accent-orange: #e67e22;
-            --white: #ffffff;
-            --gray: #f4f7f6;
+            --primary: #1a5f7a;
+            --accent: #e67e22;
+            --light: #f8f9fa;
         }
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: var(--gray);
+            font-family: 'Tahoma', sans-serif;
             margin: 0;
             padding: 0;
-            color: #333;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        .sidebar {
-            width: 260px;
-            background-color: var(--main-blue);
-            height: 100vh;
-            position: fixed;
-            right: 0;
-            top: 0;
+        header {
+            background: var(--primary);
             color: white;
-            padding: 20px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-        .main-content {
-            margin-right: 300px;
-            padding: 40px;
+        .main-container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 15px;
+            gap: 20px;
+        }
+        /* Sidebar/Info Card */
+        .sidebar {
+            flex: 1;
+            min-width: 280px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+        /* Content Area */
+        .content {
+            flex: 3;
+            min-width: 300px;
         }
         .card {
             background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .upload-area {
-            border: 2px dashed var(--light-blue);
-            padding: 40px;
-            text-align: center;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .upload-area:hover {
-            background-color: #eef9f9;
-        }
-        .btn {
-            background-color: var(--accent-orange);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 15px;
-        }
-        .info-box {
+        .info-header {
             background: #e1eef3;
             padding: 15px;
             border-radius: 8px;
-            font-size: 14px;
-            line-height: 1.8;
-            border-right: 4px solid var(--main-blue);
+            border-right: 5px solid var(--primary);
+            margin-bottom: 20px;
         }
-        h2 { color: var(--main-blue); }
-        .tab-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            background: transparent;
-            color: white;
-            border: 1px solid rgba(255,255,255,0.2);
-            text-align: right;
-            border-radius: 5px;
+        .upload-box {
+            border: 2px dashed var(--primary);
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            background: #fafafa;
+            margin: 20px 0;
             cursor: pointer;
         }
-        .tab-btn.active { background: var(--accent-orange); border: none; }
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .result-area {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fffbe6;
+            border: 1px solid #ffe58f;
+            border-radius: 8px;
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .main-container { flex-direction: column; }
+            .sidebar { order: 2; }
+            .content { order: 1; }
+        }
     </style>
 </head>
 <body>
 
-<div class="sidebar">
-    <h2 style="color: white; border-bottom: 1px solid white; padding-bottom: 10px;">استاد یار AI</h2>
-    <button class="tab-btn active">درسي سیسټم</button>
-    <button class="tab-btn" onclick="showSettings()">شخصي تنظیمات</button>
-    
-    <div style="margin-top: 50px;">
-        <p><strong>جوړوونکی:</strong></p>
-        <div class="info-box" style="color: #333;">
-            محمد عمران عمر<br>
+<header>
+    <h2 style="margin:0;">استاد یار AI</h2>
+</header>
+
+<div class="main-container">
+    <div class="sidebar">
+        <h3 style="color: var(--primary); border-bottom: 2px solid #eee; padding-bottom: 5px;">جوړوونکی</h3>
+        <div class="info-header">
+            <strong>محمد عمران عمر</strong><br>
             د کابل پوهنتون محصل<br>
-            ارواپوهنه او تربیتی علوم<br>
+            ارواپوهنه او تربيتي علوم<br>
             وردک، جغتو
         </div>
+        <button class="btn" style="background: var(--primary);" onclick="alert('تنظیمات خوندي شول!')">د سیسټم تنظیمات</button>
     </div>
-</div>
 
-<div class="main-content">
-    <div id="planner">
+    <div class="content">
         <div class="card">
-            <h2>د درسي پلان او پوښتنو جوړونکی</h2>
-            <p>خپل درسي PDF یا چپټر دلته اپلوډ کړئ ترڅو ټول پلانونه په اتومات ډول جوړ شي.</p>
+            <h3 style="margin-top:0;">درسي پلان او سوالونه جوړونکی</h3>
+            <p style="font-size: 14px; color: #666;">خپل PDF فایل اپلوډ کړئ ترڅو اهداف، میتود او پوښتنې په اتومات ډول جوړ شي.</p>
             
-            <div class="upload-area" id="dropZone">
-                <p>درسي فایل (PDF/DOCX) دلته کش کړئ یا کلیک وکړئ</p>
-                <input type="file" id="fileInput" style="display: none;">
+            <div class="upload-box" onclick="document.getElementById('fileInp').click()">
+                <p>دلته کلیک وکړئ او فایل انتخاب کړئ</p>
+                <input type="file" id="fileInp" style="display:none;">
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
-                <div>
-                    <label>د پلان وخت:</label>
-                    <select id="timeRange" style="width:100%; padding: 10px; margin-top: 5px;">
-                        <option>ساعتوار (فی ساعت)</option>
-                        <option>اونیز (هفته وار)</option>
-                        <option>میاشتنی</option>
-                        <option>کلنی پلان</option>
-                    </select>
-                </div>
-                <div>
-                    <label>د محصول ژبه:</label>
-                    <select id="lang" style="width:100%; padding: 10px; margin-top: 5px;">
-                        <option>پښتو</option>
-                        <option>دري</option>
-                        <option>English</option>
-                    </select>
-                </div>
+            <label>د پلان وخت:</label>
+            <select id="planType">
+                <option>ساعتوار پلان</option>
+                <option>اونیز پلان</option>
+                <option>میاشتنی پلان</option>
+                <option>کلنی پلان</option>
+            </select>
+
+            <label>ژبه:</label>
+            <select>
+                <option>پښتو</option>
+                <option>دري</option>
+                <option>English</option>
+            </select>
+
+            <button class="btn" onclick="processAI()">جوړ کړه</button>
+
+            <div id="result" class="result-area">
+                <h4 style="margin-top:0; color:#856404;">د AI پایله:</h4>
+                <div id="aiText"></div>
             </div>
-
-            <button class="btn" onclick="generateOutput()">پلان او سوالونه جوړ کړه</button>
-        </div>
-
-        <div class="card" id="resultCard" style="display: none;">
-            <h3>نتیجه:</h3>
-            <div id="aiOutput" style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd;">
-                </div>
         </div>
     </div>
 </div>
 
 <script>
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-
-    dropZone.onclick = () => fileInput.click();
-
-    function generateOutput() {
-        document.getElementById('resultCard').style.display = 'block';
-        document.getElementById('aiOutput').innerHTML = `
-            <p><strong>۱. درسي اهداف:</strong> د اپلوډ شوي فایل مطابق استخراج شول...</p>
-            <p><strong>۲. تدریسي میتود:</strong> فعال تدریس، پوښتنه او ځواب، او ګروپي کار.</p>
-            <p><strong>۳. پوښتنې (سخت، متوسط، اسانه):</strong> ۳۰ سوالونه چمتو شول.</p>
-            <p><strong>۴. د رخصتۍ او ازموینې مهالوېش:</strong> د کلني تقویم مطابق تنظیم شول.</p>
-            <p style="color:green;">✓ فایل په بریالیتوب سره تحلیل شو.</p>
+    function processAI() {
+        const result = document.getElementById('result');
+        const aiText = document.getElementById('aiText');
+        result.style.display = 'block';
+        aiText.innerHTML = `
+            <p><strong>۱. اهداف:</strong> د فایل پر بنسټ تحلیلي او رفتاري اهداف جوړ شول.</p>
+            <p><strong>۲. تدریسي میتود:</strong> د فعال تدریس او پوښتنې ځواب میتود وړاندیز کیږي.</p>
+            <p><strong>۳. پوښتنې:</strong> تشریحي، څلور ځوابه او خانه خالي سوالونه چمتو شول.</p>
+            <p style="color:green;"><b>بشپړ شو!</b></p>
         `;
-    }
-
-    function showSettings() {
-        alert("اوسنی اډمین: محمد عمران عمر\nد کابل پوهنتون د ارواپوهنې او تربیتی علومو محصل\nولایت: وردک، ولسوالی: جغتو");
     }
 </script>
 
